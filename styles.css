@@ -1,0 +1,265 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;600&display=swap");
+
+/* set up some general styles for all elements */
+* {
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  /* include the padding and border in an element's total width and height */
+  box-sizing: border-box;
+  outline: none;
+  border: none;
+  text-decoration: none;
+  /* transform the first character of each word to uppercase*/
+  text-transform: capitalize;
+  /* provides a fluid visual effect*/
+  transition: all 0.2s linear;
+}
+
+html {
+  /* adjust the base font size to 62.5% (which equates to 10px for easier rem unit calculation) */
+  font-size: 62.5%;
+  /* hide horizontal overflow to avoid horizontal scrolling */
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  scroll-padding-top: 7rem;
+}
+
+body {
+  background: #fff;
+  /* set the z-index to make sure it stacks below the fixed header */
+  z-index: 500;
+}
+
+a {
+  text-decoration: none;
+  color: #06060a;
+}
+
+/* add hover effect for all links */
+a:hover {
+  /* keep the color same on hover */
+  color: #06060a;
+}
+
+section {
+  padding: 2rem;
+}
+
+.heading {
+  text-align: center;
+  padding: 2rem 0;
+  padding-bottom: 3rem;
+  font-size: 3.5rem;
+  color: #06060a;
+}
+
+.button {
+  margin-top: 1rem;
+  display: inline-block;
+  padding: 0.5rem 2.5rem;
+  font-size: 1.6rem;
+  /* round the corners and add a border */
+  border-radius: 0.5rem;
+  border: 0.2rem solid #06060a;
+  color: #06060a;
+  text-decoration: none;
+}
+
+.button:hover {
+  background: #67329d;
+  color: #fff;
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  /* use a high z-index to make sure it stacks on top of everything else */
+  z-index: 1000;
+  /* align items in a row and space them evenly */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2rem;
+  background: #fff;
+  /* add a box shadow to create a lifted effect */
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+/* set up styles for the logo inside the header */
+.header .logo {
+  font-size: 2.5rem;
+  font-weight: bolder;
+  color: #06060a;
+  text-decoration: none;
+}
+
+.header .logo i {
+  color: #06060a;
+}
+
+.header .navbar .links .menu {
+  /* align items in a row */
+  display: flex;
+  /* ensure they take up the full height */
+  height: 100%;
+}
+
+.header .navbar .links .menu li {
+  list-style: none;
+  text-align: center;
+  /* positioned relative to the list item it's nested in */
+  position: relative;
+  visibility: inherit;
+}
+
+.header .navbar .links .menu .sub-menu {
+  display: block;
+  position: absolute;
+  background-color: #fff;
+  margin-top: 0.2rem;
+}
+
+.header .navbar .links .menu .sub-menu li {
+  /* hide the items by default */
+  display: none;
+  text-align: left;
+  width: 20rem;
+  height: 3.5rem;
+  margin-left: 1.5rem;
+}
+
+/* show sub-menu items when the parent list item is hovered */
+ul:hover,
+.header .navbar .links .menu li:hover .sub-menu li {
+  display: block;
+}
+
+.header .navbar.show {
+  right: 2rem;
+  transition: 0.4s linear;
+}
+.header .navbar a {
+  font-size: 1.7rem;
+  margin: 0 1rem;
+  color: #06060a;
+  text-decoration: none;
+}
+
+.header .navbar a:hover {
+  color: #67329d;
+}
+
+.header .icons div {
+  height: 4.5rem;
+  width: 4.5rem;
+  /*  defines the amount of space above and below inline elements */
+  line-height: 4.5rem;
+  border-radius: 0.5rem;
+  background-color: #eee;
+  color: #06060a;
+  font-size: 2rem;
+  margin-right: 0.3rem;
+  text-align: center;
+}
+
+.header .icons div:hover {
+  background: #67329d;
+  color: #fff;
+}
+
+/* hide the menu button by default */
+#menu-btn {
+  display: none;
+}
+
+.header .search-form {
+  position: absolute;
+  top: 110%;
+  right: -110%;
+  width: 50rem;
+  height: 5rem;
+  background: #fff;
+  /* round the corners */
+  border-radius: 5rem;
+  /* align items in a row */
+  display: flex;
+  align-items: center;
+  /* add a box shadow to create a lifted effect */
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+.header .search-form.show {
+  right: 2rem;
+  transition: 0.3s linear;
+}
+
+.header .search-form input {
+  height: 100%;
+  width: 100%;
+  background: none;
+  /* do not capitalize the text */
+  text-transform: none;
+  font-size: 1.6rem;
+  color: #06060a;
+  padding: 0 1rem;
+}
+
+.header .search-form label {
+  font-size: 2.2rem;
+  padding-right: 1.5rem;
+  color: #06060a;
+  cursor: pointer;
+}
+
+.header .search-form label:hover {
+  color: #67329d;
+}
+
+.header .login-form {
+  position: absolute;
+  top: 110%;
+  right: -110%;
+  width: 30rem;
+  /* add a box shadow to create a lifted effect */
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  /* round the corners */
+  border-radius: 0.5rem;
+  background: #fff;
+  text-align: center;
+}
+
+/* adjust styles when login form is visible */
+.header .login-form.show {
+  right: 2rem;
+  transition: 0.4s linear;
+}
+
+.header .login-form a {
+  color: #67329d;
+}
+.login {
+  font-size: 2rem;
+  text-transform: uppercase;
+}
+
+.header .login-form .box {
+  margin: 0.7rem 0;
+  background: #eee;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  font-size: 1.6rem;
+  color: #06060a;
+  text-transform: none;
+}
+.header .login-form p {
+  font-size: 1.4rem;
+  padding: 0.5rem 0;
+  color: #06060a;
+}
+
+.header .login-form a {
+  text-decoration: underline;
+}
