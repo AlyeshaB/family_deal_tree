@@ -237,9 +237,11 @@ ul:hover,
   transition: 0.4s linear;
 }
 
+/* comment from here*/
 .header .login-form a {
   color: #67329d;
 }
+
 .login {
   font-size: 2rem;
   text-transform: uppercase;
@@ -262,4 +264,88 @@ ul:hover,
 
 .header .login-form a {
   text-decoration: underline;
+}
+
+.c-item {
+  height: 50rem;
+}
+
+.c-img {
+  height: 100%;
+  object-fit: cover;
+}
+
+.vinyls .slider {
+  padding: 1rem;
+}
+
+.vinyls .slider:first-child {
+  margin-bottom: 2rem;
+}
+
+.vinyls .slider .box {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  text-align: center;
+  padding: 3rem 2rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+.vinyls .slider .box img {
+  height: 20rem;
+}
+
+.vinyls .slider .box h3 {
+  font-size: 2.5rem;
+  color: #06060a;
+}
+
+.vinyls .slider .box .details {
+  font-size: 2rem;
+  color: #06060a;
+  padding: 0.5rem 0;
+}
+
+/* media queries */
+
+@media (max-width: 991px) {
+  html {
+    font-size: 55%;
+  }
+  .header {
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  #menu-btn {
+    display: inline-block;
+  }
+
+  .header .navbar {
+    position: absolute;
+    top: 110%;
+    right: -110%;
+    width: 30rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+    background: #fff;
+  }
+  .header .navbar.show {
+    right: 2rem;
+    transition: 0.4s linear;
+  }
+  .header .navbar .links .menu {
+    font-size: 2rem;
+    display: block;
+    text-align: left;
+    width: 15rem;
+    height: 12rem;
+    margin-left: 0.5rem;
+  }
+}
+@media (max-width: 450px) {
+  html {
+    font-size: 50%;
+  }
 }
