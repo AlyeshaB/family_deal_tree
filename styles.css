@@ -306,6 +306,29 @@ ul:hover,
   padding: 0.5rem 0;
 }
 
+.wrapper {
+  background: #eee;
+  padding: 2rem;
+  min-height: 5rem;
+}
+
+.row {
+  width: 90rem;
+  height: 55rem;
+}
+
+.side-image {
+  background-position: center;
+}
+
+.container.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10rem;
+  font-size: 1.6rem;
+}
+
 /* media queries */
 
 @media (max-width: 991px) {
