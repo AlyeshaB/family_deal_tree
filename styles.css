@@ -67,7 +67,7 @@ section {
 }
 
 .button:hover {
-  background: #02a145;
+  background: #32cd32;
   color: #fff;
 }
 
@@ -149,7 +149,7 @@ ul:hover,
 }
 
 .header .navbar a:hover {
-  color: #22cc9d;
+  color: #32cd32;
 }
 
 .header .icons div {
@@ -166,7 +166,7 @@ ul:hover,
 }
 
 .header .icons div:hover {
-  background: #02a145;
+  background: #32cd32;
   color: #fff;
 }
 
@@ -214,7 +214,7 @@ ul:hover,
 }
 
 .header .search-form label:hover {
-  color: #02a145;
+  color: #32cd32;
 }
 
 .header .login-form {
@@ -239,7 +239,7 @@ ul:hover,
 
 /* comment from here*/
 .header .login-form a {
-  color: #02a145;
+  color: #32cd32;
 }
 
 .login {
@@ -276,7 +276,10 @@ ul:hover,
 }
 
 .swiper-slide.box {
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   height: 100%;
   position: relative;
   overflow: hidden; /* hides the portion of the image that extends beyond the box */
@@ -317,6 +320,43 @@ ul:hover,
   align-items: center;
   margin: 10rem;
   font-size: 1.6rem;
+}
+
+.footer {
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #fff;
+  color: #fff;
+  text-align: center;
+}
+
+.footer .text-muted {
+  font-size: 1.2rem;
+}
+
+.btn-social-icon {
+  height: 4.5rem;
+  width: 4.5rem;
+  padding: 1rem;
+  margin: 0.5rem;
+  text-align: center;
+  font-size: 2rem;
+  border-radius: 50%;
+  border: none;
+  color: #fff;
+}
+
+.btn-facebook {
+  background-color: #6c757d;
+}
+
+.btn-twitter {
+  background-color: #55acee;
+}
+
+.btn-instagram {
+  background-color: #dd4b39;
 }
 
 /* media queries */

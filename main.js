@@ -59,22 +59,29 @@ var swiper = new Swiper(".swiper-slider", {
     disableOnInteraction: false,
   },
 
-  // Position of the active slide will be in the center
-  centeredSlides: true,
+  // Position of the active slide won't be in the center to avoid seeing parts of other images when on smaller screens
+  centeredSlides: false,
 
-  // Breakpoints. Different number of slides per view depending on the viewport width.
-  // For viewports less than 768px wide, only 1 slide will be shown.
-  // For viewports between 768px and 1020px wide, 2 slides will be shown.
-  // For viewports more than 1020px wide, 3 slides will be shown.
   breakpoints: {
-    0: {
+    // when window width is >= 320px
+    320: {
       slidesPerView: 1,
+      spaceBetween: 10,
     },
-    768: {
+    // when window width is >= 480px
+    480: {
+      slidesPerView: 1,
+      spaceBetween: 20,
+    },
+    // when window width is >= 640px
+    640: {
       slidesPerView: 2,
+      spaceBetween: 30,
     },
-    1020: {
+    // when window width is >= 768px
+    768: {
       slidesPerView: 3,
+      spaceBetween: 40,
     },
   },
 });
