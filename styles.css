@@ -67,7 +67,7 @@ section {
 }
 
 .button:hover {
-  background: #67329d;
+  background: #02a145;
   color: #fff;
 }
 
@@ -149,7 +149,7 @@ ul:hover,
 }
 
 .header .navbar a:hover {
-  color: #67329d;
+  color: #22cc9d;
 }
 
 .header .icons div {
@@ -166,7 +166,7 @@ ul:hover,
 }
 
 .header .icons div:hover {
-  background: #67329d;
+  background: #02a145;
   color: #fff;
 }
 
@@ -214,7 +214,7 @@ ul:hover,
 }
 
 .header .search-form label:hover {
-  color: #67329d;
+  color: #02a145;
 }
 
 .header .login-form {
@@ -239,7 +239,7 @@ ul:hover,
 
 /* comment from here*/
 .header .login-form a {
-  color: #67329d;
+  color: #02a145;
 }
 
 .login {
@@ -275,46 +275,36 @@ ul:hover,
   object-fit: cover;
 }
 
-.vinyls .slider {
+.swiper-slide.box {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden; /* hides the portion of the image that extends beyond the box */
+}
+
+.image-section {
+  width: 100%;
+  height: 50%;
+  overflow: hidden; /* hides the portion of the image that extends beyond the section */
+}
+
+.text-section {
+  width: 100%;
+  height: 50%;
   padding: 1rem;
 }
 
-.vinyls .slider:first-child {
-  margin-bottom: 2rem;
-}
-
-.vinyls .slider .box {
-  background-color: #fff;
-  border-radius: 0.5rem;
-  text-align: center;
-  padding: 3rem 2rem;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-}
-
-.vinyls .slider .box img {
-  height: 20rem;
-}
-
-.vinyls .slider .box h3 {
-  font-size: 2.5rem;
-  color: #06060a;
-}
-
-.vinyls .slider .box .details {
-  font-size: 2rem;
-  color: #06060a;
-  padding: 0.5rem 0;
+.fit-image {
+  width: 100%; /* makes the image take up the full width of the box */
+  height: 100%; /* makes the image take up the full height of the box */
+  object-fit: cover; /* scales the image as large as possible without stretching/distorting */
+  object-position: center;
 }
 
 .wrapper {
   background: #eee;
   padding: 2rem;
   min-height: 5rem;
-}
-
-.row {
-  width: 90rem;
-  height: 55rem;
 }
 
 .side-image {
