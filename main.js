@@ -85,3 +85,22 @@ var swiper = new Swiper(".swiper-slider", {
     },
   },
 });
+// Add an event listener for the 'submit' event on the form with the id 'register-Form'
+document
+  .getElementById("register-Form")
+  .addEventListener("submit", function (event) {
+    // Retrieve the value entered into the password field
+    var password = document.getElementById("password").value;
+
+    // Retrieve the value entered into the confirm password field
+    var confirmPassword = document.getElementById("confirm-password").value;
+
+    // Check if the password and confirm password values do not match
+    if (password != confirmPassword) {
+      // If they do not match, alert the user
+      alert("Passwords do not match.");
+
+      // Prevent the form submission
+      event.preventDefault();
+    }
+  });
