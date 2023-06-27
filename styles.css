@@ -351,6 +351,67 @@ body {
   background-color: #dd4b39;
 }
 
+.content {
+  width: 80%;
+  max-width: 120rem;
+}
+
+.create-account-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 12rem;
+}
+
+.section-box {
+  width: 100%;
+  background-color: #fff;
+  padding: 10rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.red {
+  color: red;
+  font-weight: bold;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-control {
+  width: 100%;
+  padding: 1rem;
+  border: 0.1rem solid #ddd;
+  border-radius: 4rem;
+}
+
+#min-password {
+  margin-top: -1rem;
+  margin-bottom: 1rem;
+}
+
+/* Target the button using its ID */
+#registerButton {
+  display: block; /* Make the button a block element */
+  width: 13rem; /* Set a specific width - adjust as needed */
+  margin: 2px auto; /* Center the button horizontally */
+  padding: 1rem;
+  /* Add other styles as needed */
+}
+
+.container-box {
+  margin-top: 10rem;
+}
+
+/* on merchants page
+*/
+.image-container {
+  width: 6rem;
+  height: 6rem;
+  overflow: hidden;
+}
+
 /* media queries */
 
 @media (max-width: 991px) {

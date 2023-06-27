@@ -55,7 +55,7 @@ var swiper = new Swiper(".swiper-slider", {
 
   // Autoplay configuration. The slider will auto-slide after 7.5s and will not stop auto-sliding when user interaction is detected
   autoplay: {
-    delay: 7500,
+    delay: 6500,
     disableOnInteraction: false,
   },
 

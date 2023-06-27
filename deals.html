@@ -18,15 +18,14 @@
 
     <!-- Link to custom styles for this webpage -->
     <link rel="stylesheet" href="styles.css" />
+
     <!-- The title of the webpage, set dynamically using a template engine -->
     <title>
         <%= tdata %>
     </title>
 </head>
 
-
 <body>
-
     <!-- header section starts -->
     <header class="header">
         <!-- Logo which links to the homepage -->
@@ -39,7 +38,7 @@
                     <!-- Menu items with links to various pages -->
                     <li><a href="/deals">deals</a></li>
                     <li><a href="/vouchers">vouchers</a></li>
-                    <li><a href="/brands">merchants</a></li>
+                    <li><a href="/brands">brands</a></li>
                     <!-- Dropdown menu for categories -->
                     <li class="categories">
                         <a href="/categories">categories</a>
@@ -80,65 +79,99 @@
     </header>
     <!-- header section ends -->
 
-    <div class="content">
-        <div class="create-account-page container">
-            <form id="register-Form" class="section-box" action="/register" method="post">
-                <p class="red">
-                    Fields marked with * are required
-                </p>
-                <div class="row">
-                    <div class="col-md-4 col-sm-4">
-                        <div class="form-group">
-                            <input class="form-control" type="text" id="firstName" name="firstName" required
-                                placeholder="* First Name">
+    <div class="container-box">
+        <div class="container-lg my-5 ">
+            <h2>So many deals ... see them all!</h2>
+            <div class="row mb-4">
+                <!-- Deal 1 -->
+                <div class="col-sm-4 col-lg-4">
+                    <div class="card">
+                        <img class="card-img-top" src="images/deal1.jpg" alt="Deal 1 Image">
+                        <div class="card-body">
+                            <h5 class="card-title">Deal 1</h5>
+                            <p class="card-text"> <s>€100</s><strong>€70</strong> - You save €30!</p>
+                            <a href="#" class="btn btn-primary">View Deal</a>
+                            <a href="#" class="btn btn-outline-secondary">
+                                <i class="fas fa-heart"></i> Add to Favourites
+                            </a>
                         </div>
-                    </div>
-                    <div class="col-md-4 col-sm-4">
-                        <div class="form-group">
-                            <input class="form-control" type="text" id="lastName" name="lastName" required
-                                placeholder="* Last Name">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-7 col-sm-7">
-                            <div class="form-group">
-                                <input class="form-control" type="text" id="email" name="email" required
-                                    placeholder="* Email">
-                            </div>
-                        </div>
-                        <div class="col-md-5 col-sm-5">
-                            <div class="form-group">
-                                <input class="form-control" type="text" id="username" name="username" required
-                                    placeholder="* Username">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6 col-sm-6">
-                            <div class="form-group">
-                                <input class="form-control" type="password" id="password" name="password" required
-                                    placeholder="* Password" minlength="8">
-                            </div>
-                            <div class="note">
-                                <p id="min-password">minimum length is 8 characters</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-6">
-                            <div class="form-group">
-                                <input class="form-control" type="password" id="confirm-password"
-                                    name="confirm-password" required placeholder="* confirm password" minlength="8">
-                            </div>
-                        </div>
-                    </div>
-                    <!-- add date of birth here-->
-                    <div class="row"></div>
-                    <div class="row"><button class="button" id="registerButton" type="submit">Join</button>
                     </div>
                 </div>
-            </form>
+                <div class="col-sm-4 col-lg-4">
+                    <div class="card">
+                        <img class="card-img-top" src="images/deal1.jpg" alt="Deal 1 Image">
+                        <div class="card-body">
+                            <h5 class="card-title">Deal 1</h5>
+                            <p class="card-text"> <s>€100</s><strong>€70</strong> - You save €30!</p>
+                            <a href="#" class="btn btn-primary">View Deal</a>
+                            <a href="#" class="btn btn-outline-secondary">
+                                <i class="fas fa-heart"></i> Add to Favourites
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-lg-4">
+                    <div class="card">
+                        <img class="card-img-top" src="images/deal1.jpg" alt="Deal 1 Image">
+                        <div class="card-body">
+                            <h5 class="card-title">Deal 1</h5>
+                            <p class="card-text"> <s>€100</s><strong>€70</strong> - You save €30!</p>
+                            <a href="#" class="btn btn-primary">View Deal</a>
+                            <a href="#" class="btn btn-outline-secondary">
+                                <i class="fas fa-heart"></i> Add to Favourites
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <!-- Deal 1 -->
+                <div class="col-sm-4 col-lg-4">
+                    <div class="card">
+                        <img class="card-img-top" src="images/deal1.jpg" alt="Deal 1 Image">
+                        <div class="card-body">
+                            <h5 class="card-title">Deal 1</h5>
+                            <p class="card-text"> <s>€100</s><strong>€70</strong> - You save €30!</p>
+                            <a href="#" class="btn btn-primary">View Deal</a>
+                            <a href="#" class="btn btn-outline-secondary">
+                                <i class="fas fa-heart"></i> Add to Favourites
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-lg-4">
+                    <div class="card">
+                        <img class="card-img-top" src="images/deal1.jpg" alt="Deal 1 Image">
+                        <div class="card-body">
+                            <h5 class="card-title">Deal 1</h5>
+                            <p class="card-text"> <s>€100</s><strong>€70</strong> - You save €30!</p>
+                            <a href="#" class="btn btn-primary">View Deal</a>
+                            <a href="#" class="btn btn-outline-secondary">
+                                <i class="fas fa-heart"></i> Add to Favourites
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-lg-4">
+                    <div class="card">
+                        <img class="card-img-top" src="images/deal1.jpg" alt="Deal 1 Image">
+                        <div class="card-body">
+                            <h5 class="card-title">Deal 1</h5>
+                            <p class="card-text"> <s>€100</s><strong>€70</strong> - You save €30!</p>
+                            <a href="#" class="btn btn-primary">View Deal</a>
+                            <a href="#" class="btn btn-outline-secondary">
+                                <i class="fas fa-heart"></i> Add to Favourites
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
+
     <footer class="footer bg-white mt-auto py-3 text-center">
         <div class="container">
             <span class="text-muted">&copy; 2023 Family Deal Tree</span>
@@ -148,6 +181,7 @@
                 <a href="#" class="btn btn-social-icon btn-twitter"><i class="fab fa-twitter" alt="Twitter"></i></a>
                 <a href="#" class="btn btn-social-icon btn-instagram"><i class="fab fa-instagram"
                         alt="Instagram"></i></a>
+
             </div>
 
             <div class="mt-2">
@@ -168,5 +202,9 @@
 
     <!-- custom javascript file link -->
     <script src="main.js"></script>
+
+
+
+</body>
 
 </html>
