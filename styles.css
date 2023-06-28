@@ -25,6 +25,10 @@ html {
   scroll-padding-top: 7rem;
 }
 
+.h2,
+h2 {
+  color: #2b2430;
+}
 body {
   background: #fff;
   /* set the z-index to make sure it stacks below the fixed header */
@@ -48,10 +52,9 @@ section {
 
 .heading {
   text-align: center;
-  padding: 2rem 0;
+  padding: 2rem 2rem;
   padding-bottom: 3rem;
-  font-size: 3.5rem;
-  color: #06060a;
+  font-size: 3rem;
 }
 
 .button {
@@ -410,6 +413,13 @@ body {
   width: 6rem;
   height: 6rem;
   overflow: hidden;
+}
+
+.container-box .merchant-name {
+  text-align: center;
+  margin-top: 1.8rem;
+  padding-left: 1rem;
+  font-size: 1.6rem;
 }
 
 /* media queries */
