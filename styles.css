@@ -29,6 +29,7 @@ html {
 h2 {
   color: #2b2430;
 }
+
 body {
   background: #fff;
   /* set the z-index to make sure it stacks below the fixed header */
@@ -122,7 +123,7 @@ section {
   display: block;
   position: absolute;
   background-color: #fff;
-  margin-top: 0.2rem;
+  margin-top: 0.1rem;
 }
 
 .header .navbar .links .menu .sub-menu li {
@@ -282,6 +283,41 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+}
+.card {
+  border: none;
+}
+
+.card-img-top {
+  border: none;
+}
+.btn.btn-primary,
+.btn.btn-outline-secondary {
+  margin-top: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 2.5rem;
+  font-size: 1.8rem;
+  /* round the corners and add a border */
+  border-radius: 0.5rem;
+  border: 0.2rem;
+  background-color: #eee;
+  color: #06060a;
+  text-decoration: none;
+}
+
+.btn.btn-outline-secondary {
+  height: 5rem;
+  width: 5rem;
+  margin-left: 2rem;
+  border-radius: 50%;
+}
+
+.btn.btn-primary:hover,
+.btn.btn-outline-secondary:hover {
+  background: #32cd32;
+  color: #fff;
 }
 
 .content {
