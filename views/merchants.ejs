@@ -4,64 +4,27 @@
             <div class="container-lg my-5">
                 <h2>all merchants a-z</h2>
                 <div class="row mb-4">
+                    <% merchants.forEach((merchant)=> { %>
+                        <div class="col-sm-3 col-lg-3">
+                            <!-- need to add link to all deals associated with that merchant -->
+                            <a href="#" class="card-link">
+                                <div class="card">
+                                    <div class="card-body d-flex">
+                                        <div class="image-container">
+                                            <img class="card-img-top mr-3 styled-image" src="<%= merchant.image_uri %>"
+                                                alt="<%= merchant.merchant_name %> logo">
+                                        </div>
+                                        <h5 class="merchant-name">
+                                            <%= merchant.merchant_name %>
 
-                    <div class="col-sm-3 col-lg-3">
-                        <a href="#" class="card-link">
-                            <div class="card">
-                                <div class="card-body d-flex">
-                                    <div class="image-container">
-                                        <img class="card-img-top mr-3"
-                                            src="https://invitationdigital-res-1.cloudinary.com/image/upload/w_200,h_200,c_fill,q_auto,fl_strip_profile,f_auto/handm_logo.jpg"
-                                            alt="h&m logo">
+                                        </h5>
                                     </div>
-                                    <h5 class="merchant-name">H&M</h5>
                                 </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-sm-3 col-lg-3">
-                        <a href="#" class="card-link">
-                            <div class="card">
-                                <div class="card-body d-flex">
-                                    <div class="image-container">
-                                        <img class="card-img-top mr-3"
-                                            src="https://invitationdigital-res-1.cloudinary.com/image/upload/w_114,h_114,c_fill,q_auto,fl_strip_profile,f_auto/dominos_pizza_logo_4.jpg"
-                                            alt="dominos_pizza_logo_4">
-                                    </div>
-                                    <h5 class="merchant-name">Domino's</h5>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-sm-3 col-lg-3">
-                        <a href="#" class="card-link">
-                            <div class="card">
-                                <div class="card-body d-flex">
-                                    <div class="image-container">
-                                        <img class="card-img-top mr-3"
-                                            src="https://invitationdigital-res-1.cloudinary.com/image/upload/w_114,h_114,c_fill,q_auto,fl_strip_profile,f_auto/dominos_pizza_logo_4.jpg"
-                                            alt="dominos_pizza_logo_4">
-                                    </div>
-                                    <h5 class="merchant-name">Domino's</h5>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-sm-3 col-lg-3">
-                        <a href="#" class="card-link">
-                            <div class="card">
-                                <div class="card-body d-flex">
-                                    <div class="image-container">
-                                        <img class="card-img-top mr-3"
-                                            src="https://invitationdigital-res-1.cloudinary.com/image/upload/w_114,h_114,c_fill,q_auto,fl_strip_profile,f_auto/dominos_pizza_logo_4.jpg"
-                                            alt="dominos_pizza_logo_4">
-                                    </div>
-                                    <h5 class="merchant-name">Domino's</h5>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
+                            </a>
+                        </div>
+                        <% }); %>
                 </div>
             </div>
+        </div>
         </div>
         <%- include("foot") %>

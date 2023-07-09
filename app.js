@@ -5,6 +5,7 @@ const app = express();
 // Define the PORT variable, use the value from the .env file if it's defined, otherwise use 3000
 const PORT = process.env.PORT || 3000;
 const path = require("path");
+const connection = require("./config/db.js");
 
 app.set("view engine", "ejs");
 // Set the directory from which static files (CSS and JavaScript) will be served
@@ -23,7 +24,13 @@ app.get("/", (req, res) => {
 
 app.get("/deals", (req, res) => {
   const title = "Bargains";
-  res.render("deals", { tdata: title });
+  let sql = `SELECT deal_id, title, description, deal_uri, image_uri, post_date, price, original_price, user_id, merchant_id, location_id FROM deal`;
+  connection.query(sql, (err, dealData) => {
+    if (err) {
+      throw err;
+    }
+    res.render("deals", { tdata: title, dealData });
+  });
 });
 
 app.get("/vouchers", (req, res) => {
@@ -33,7 +40,17 @@ app.get("/vouchers", (req, res) => {
 
 app.get("/merchants", (req, res) => {
   const title = "Merchants";
-  res.render("deals", { tdata: title });
+  connection.query(
+    "SELECT * FROM merchant ORDER BY merchant_name ASC",
+    (err, results) => {
+      if (err) {
+        throw err;
+      } else {
+        // render the page and pass the results
+        res.render("merchants", { tdata: title, merchants: results });
+      }
+    }
+  );
 });
 
 app.get("/categories", (req, res) => {
@@ -48,7 +65,9 @@ app.get("/register", (req, res) => {
 
 app.post("/register", (req, res) => {
   console.log(req.body);
-  res.send("Registered!");
+  const title = "Welcome";
+  let userData = req.body;
+  res.render("register", { sentback: userData, tdata: title });
 });
 
 // Start the server, listening on the specified PORT

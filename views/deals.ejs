@@ -1,100 +1,37 @@
 <%- include("top") %>
     <%- include("head") %>
         <div class="container-box">
-            <div class="container-lg my-5 ">
+            <div class="container-lg my-5">
                 <h2>So many deals ... see them all!</h2>
                 <div class="row mb-4">
-                    <!-- Deal 1 -->
-                    <div class="col-sm-4 col-lg-4">
-                        <div class="card">
-                            <img class="card-img-top" src="images/deal1.jpg" alt="Deal 1 Image">
-                            <div class="card-icon">
-                                <a href="#" class="btn btn-outline-secondary">
-                                    <i class="fa fa-bookmark" aria-hidden="true"></i> <!-- Save icon -->
-                                </a>
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title">Deal 1</h5>
-                                <p class="card-text"> <s>€100</s><strong>€70</strong> - You save €30!</p>
-                                <a href="#" class="btn btn-primary">View Deal</a>
-                                <a href="#" class="btn btn-outline-secondary">
-                                    <i class="fas fa-heart"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-4 col-lg-4">
-                        <div class="card">
-                            <img class="card-img-top" src="images/deal1.jpg" alt="Deal 1 Image">
-                            <div class="card-body">
-                                <h5 class="card-title">Deal 1</h5>
-                                <p class="card-text"> <s>€100</s><strong>€70</strong> - You save €30!</p>
-                                <a href="#" class="btn btn-primary">View Deal</a>
-                                <a href="#" class="btn btn-outline-secondary">
-                                    <i class="fas fa-heart"></i>
-                                </a>
+                    <% dealData.forEach((deal)=> { %>
+                        <div class="col-sm-4 col-lg-4">
+                            <div class="card">
+                                <img class="card-img-top" src="<%= deal.image_uri %>" alt="<%= deal.title %> Image">
+                                <div class="card-icon">
+                                    <a href="#" class="btn btn-outline-secondary">
+                                        <i class="fa fa-bookmark" aria-hidden="true"></i> <!-- Save icon -->
+                                    </a>
+                                </div>
+                                <div class="card-body">
+                                    <h3 class="card-title">
+                                        <%= deal.title %>
+                                    </h3>
+                                    <p class="card-text">
+                                        <strong>€<%= deal.price %></strong>
+                                        <s>€<%= deal.original_price %></s>
+                                        - You save €<%=(deal.original_price - deal.price).toFixed(2) %>!
+                                    </p>
+                                    <a href="<%= deal.deal_uri %>" class="btn btn-primary">View Deal</a>
+                                    <a href="#" class="btn btn-outline-secondary">
+                                        <i class="fas fa-heart"></i>
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-sm-4 col-lg-4">
-                        <div class="card">
-                            <img class="card-img-top" src="images/deal1.jpg" alt="Deal 1 Image">
-                            <div class="card-body">
-                                <h5 class="card-title">Deal 1</h5>
-                                <p class="card-text"> <s>€100</s><strong>€70</strong> - You save €30!</p>
-                                <a href="#" class="btn btn-primary">View Deal</a>
-                                <a href="#" class="btn btn-outline-secondary">
-                                    <i class="fas fa-heart"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="row">
-                    <!-- Deal 1 -->
-                    <div class="col-sm-4 col-lg-4">
-                        <div class="card">
-                            <img class="card-img-top" src="images/deal1.jpg" alt="Deal 1 Image">
-                            <div class="card-body">
-                                <h5 class="card-title">Deal 1</h5>
-                                <p class="card-text"> <s>€100</s><strong>€70</strong> - You save €30!</p>
-                                <a href="#" class="btn btn-primary">View Deal</a>
-                                <a href="#" class="btn btn-outline-secondary">
-                                    <i class="fas fa-heart"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-4 col-lg-4">
-                        <div class="card">
-                            <img class="card-img-top" src="images/deal1.jpg" alt="Deal 1 Image">
-                            <div class="card-body">
-                                <h5 class="card-title">Deal 1</h5>
-                                <p class="card-text"> <s>€100</s><strong>€70</strong> - You save €30!</p>
-                                <a href="#" class="btn btn-primary">View Deal</a>
-                                <a href="#" class="btn btn-outline-secondary">
-                                    <i class="fas fa-heart"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-4 col-lg-4">
-                        <div class="card">
-                            <img class="card-img-top" src="images/deal1.jpg" alt="Deal 1 Image">
-                            <div class="card-body">
-                                <h5 class="card-title">Deal 1</h5>
-                                <p class="card-text"> <s>€100</s><strong>€70</strong> - You save €30!</p>
-                                <a href="#" class="btn btn-primary">View Deal</a>
-                                <a href="#" class="btn btn-outline-secondary">
-                                    <i class="fas fa-heart"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
+                        <% }); %>
                 </div>
             </div>
         </div>
+
         <%- include("foot") %>

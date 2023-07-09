@@ -288,9 +288,13 @@ body {
   border: none;
 }
 
+.card-body {
+  font-size: 1.6rem;
+}
+
 .card-img-top {
   border: none;
-  object-fit: cover;
+  object-fit: contain;
   height: 20rem;
 }
 
@@ -299,6 +303,7 @@ body {
   width: 100%;
   object-fit: cover; /* Maintain aspect ratio and fill container */
 }
+
 .btn.btn-primary,
 .btn.btn-outline-secondary {
   margin-top: 1rem;
