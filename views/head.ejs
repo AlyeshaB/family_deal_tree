@@ -1,0 +1,53 @@
+<!-- header section starts -->
+<header class="header">
+    <!-- Logo which links to the homepage -->
+    <a href="/" class="logo"><i class="fa fa-tree" aria-hidden="true"></i> family deal tree</a>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="links">
+            <ul class="menu">
+                <!-- Menu items with links to various pages -->
+                <li><a href="/deals">deals</a></li>
+                <li><a href="/vouchers">vouchers</a></li>
+                <li><a href="/merchants">merchants</a></li>
+                <!-- Dropdown menu for categories -->
+                <li class="categories">
+                    <a href="/categories">categories</a>
+                    <ul class="sub-menu">
+                        <!-- Dropdown sub-menu items -->
+                        <li><a href="/categories/home-living">home & living</a></li>
+                        <li><a href="/categories/culture-lesiure">culture & leisure</a></li>
+                        <li><a href="/categories/familyfun">family & kids</a></li>
+                        <li><a href="categories/electronics">electronics</a></li>
+                        <li><a href="categories/sports-outdoors">sport & outdoors</a></li>
+                        <li><a href="categories/garden-diy">garden & DIY</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Menu, Search and Login buttons -->
+    <div class="icons">
+        <div class="fas fa-bars" id="menu-btn"></div>
+        <div class="fas fa-search" id="search-btn"></div>
+        <div class="fas fa-user" id="login-btn"></div>
+    </div>
+
+    <!-- Search form -->
+    <form action="./app" method="GET" class="search-form">
+        <input type="search" id="search-box" placeholder="search..." />
+        <label for="search-box" class="fas fa-search"></label>
+    </form>
+
+    <!-- Login form -->
+    <form action="" class="login-form">
+        <p class="login">login</p>
+        <input type="text" placeholder="username" class="box" />
+        <input type="password" placeholder="password" class="box" />
+        <input type="submit" value="Login" class="button" />
+        <p>no account? <a href="/register">sign up</a></p>
+    </form>
+</header>
+<!-- header section ends -->

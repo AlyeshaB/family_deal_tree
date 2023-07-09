@@ -1,0 +1,39 @@
+<%- include("top") %>
+    <%- include("head") %>
+        <section class="my-4">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <h2>About This Deal</h2>
+                        <form id="dealForm">
+                            <div class="mb-3">
+                                <label for="dealTitle" class="form-label">Deal Title</label>
+                                <input type="text" class="form-control" id="dealTitle" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="dealDescription" class="form-label">Deal Description</label>
+                                <textarea class="form-control" id="dealDescription" rows="4" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="dealDetails" class="form-label">Details</label>
+                                <textarea class="form-control" id="dealDetails" rows="4" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="dealFeatures" class="form-label">Features</label>
+                                <textarea class="form-control" id="dealFeatures" rows="4" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="miscellaneous1" class="form-label">Miscellaneous 1</label>
+                                <textarea class="form-control" id="miscellaneous1" rows="4" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="miscellaneous2" class="form-label">Miscellaneous 2</label>
+                                <textarea class="form-control" id="miscellaneous2" rows="4" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <%- include("foot") %>

@@ -315,6 +315,16 @@ body {
   text-decoration: none;
 }
 
+.card-image {
+  position: relative; /* This allows us to use absolute positioning for children */
+}
+
+.card-icon {
+  position: absolute;
+  top: 1rem; /* Adjust this value as needed */
+  right: 1rem; /* Adjust this value as needed */
+  z-index: 10; /* Ensure the icon appears above the image */
+}
 .btn.btn-outline-secondary {
   height: 5rem;
   width: 5rem;

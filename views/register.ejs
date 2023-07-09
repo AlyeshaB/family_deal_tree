@@ -1,0 +1,63 @@
+<%- include("top") %>
+    <%- include("head") %>
+        <div class="content">
+            <div class="create-account-page container">
+                <div id="errorMessages"></div>
+                <form id="register-Form" class="section-box" action="/register" method="POST">
+                    <p class="red">
+                        Fields marked with * are required
+                    </p>
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4">
+                            <div class="form-group">
+                                <input class="form-control" type="text" id="firstName" name="firstName" required
+                                    placeholder="* First Name">
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4">
+                            <div class="form-group">
+                                <input class="form-control" type="text" id="lastName" name="lastName" required
+                                    placeholder="* Last Name">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-7 col-sm-7">
+                                <div class="form-group">
+                                    <input class="form-control" type="text" id="email" name="email" required
+                                        placeholder="* Email">
+                                </div>
+                            </div>
+                            <div class="col-md-5 col-sm-5">
+                                <div class="form-group">
+                                    <input class="form-control" type="text" id="username" name="username" required
+                                        placeholder="* Username">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <input class="form-control" type="password" id="password" name="password" required
+                                        placeholder="* Password" minlength="8">
+                                </div>
+                                <div class="note">
+                                    <p id="min-password">minimum length is 8 characters</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <input class="form-control" type="password" id="confirm-password"
+                                        name="confirm-password" required placeholder="* confirm password" minlength="8">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- add date of birth here-->
+                        <div class="row"></div>
+                        <div class="row"><button class="button" id="registerButton" type="submit">Join</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <%- include("foot") %>
