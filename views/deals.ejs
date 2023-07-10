@@ -4,7 +4,7 @@
             <div class="container-lg my-5">
                 <h2>So many deals ... see them all!</h2>
                 <div class="row mb-4">
-                    <% dealData.forEach((deal)=> { %>
+                    <% deals.forEach((deal)=> { %>
                         <div class="col-sm-4 col-lg-4">
                             <div class="card">
                                 <img class="card-img-top" src="<%= deal.image_uri %>" alt="<%= deal.title %> Image">
@@ -22,7 +22,7 @@
                                         <s>€<%= deal.original_price %></s>
                                         - You save €<%=(deal.original_price - deal.price).toFixed(2) %>!
                                     </p>
-                                    <a href="<%= deal.deal_uri %>" class="btn btn-primary">View Deal</a>
+                                    <a href="/deals/<%= deal.deal_id %>" class="btn btn-primary">View Deal</a>
                                     <a href="#" class="btn btn-outline-secondary">
                                         <i class="fas fa-heart"></i>
                                     </a>

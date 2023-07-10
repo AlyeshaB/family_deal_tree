@@ -1,4 +1,36 @@
 <%- include("top") %>
     <%- include("head") %>
+        <div class="container-box">
+            <div class="container-lg my-5">
+                <h2>So many vouchers ... redeem them all!</h2>
+                <div class="row mb-4">
+                    <% vouchers.forEach((voucher)=> { %>
+                        <div class="col-sm-4 col-lg-4">
+                            <div class="card">
+                                <img class="card-img-top" src="<%= voucher.merchant_image_uri %>"
+                                    alt="<%= voucher.merchant_name %> logo">
+                                <div class="card-icon">
+                                    <a href="#" class="btn btn-outline-secondary">
+                                        <i class="fa fa-bookmark" aria-hidden="true"></i> <!-- Save icon -->
+                                    </a>
+                                </div>
+                                <div class="card-body">
+                                    <h3 class="card-title">
+                                        <%= voucher.title %>
+                                    </h3>
+                                    <p class="card-text">
+                                        <strong>€<%= voucher.discount %></strong>
 
+                                    </p>
+                                    <a href="/voucherCode" class="btn btn-primary">View Code</a>
+                                    <a href="#" class="btn btn-outline-secondary">
+                                        <i class="fas fa-heart"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <% }); %>
+                </div>
+            </div>
+        </div>
         <%- include("foot") %>

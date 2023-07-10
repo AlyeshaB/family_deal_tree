@@ -6,24 +6,27 @@
                 <section class="my-4">
                     <div class="card">
                         <div class="row g-0">
-                            <div class="col-md-4">
-                                <img src="https://images.pexels.com/photos/1650904/pexels-photo-1650904.jpeg?auto=compress&cs=tinysrgb&w=400"
-                                    class="card-img custom-img" alt="Item Picture">
-                            </div>
-                            <div class="col-md-8">
-                                <div class="card-body">
-                                    <h5 class="card-title">Item Title</h5>
-                                    <p class="card-text">Original Price: $100</p>
-                                    <p class="card-text">Discount Price: $80 (20% off)</p>
-                                    <a href="#" class="btn btn-primary">Get Deal</a>
-                                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                                        data-bs-target="#voucherModal">Add Voucher Code</button>
+                            <% deals.forEach((deal)=>{ %>
+                                <div class="col-md-4">
+                                    <img src="<%= deal.image_uri %>" class="card-img custom-img"
+                                        alt="Picture of <%= deal.title %>">
                                 </div>
-                            </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <%= deal.title %>
+                                        </h5>
+                                        <p class="card-text">Original Price: € <%= deal.original_price %>
+                                        </p>
+                                        <p class="card-text">Discount Price: € <%= deal.price%>
+                                        </p>
+                                        <a href="<%= deal.deal_uri %>" class="btn btn-primary">Get Deal</a>
+                                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                                            data-bs-target="#voucherModal">Add Voucher Code</button>
+                                    </div>
+                                </div>
                         </div>
-                        <div class="card-footer">
-                            <a href="#comments" class="float-end"><i class="bi bi-chat-dots"></i> Comments</a>
-                        </div>
+
                     </div>
 
                 </section>
@@ -37,7 +40,7 @@
                                         <div class="col">
                                             <h2>About This Deal</h2>
                                             <div id="dealDetails">
-                                                <!-- Dynamic content will be added here -->
+                                                <%= deal.description %>
                                             </div>
                                         </div>
                                     </div>
@@ -53,6 +56,9 @@
                                 </section>
                             </div>
                             <div class="row">
+                                <div class="card-footer">
+                                    <a href="#comments" class="float-end"><i class="bi bi-chat-dots"></i> Comments</a>
+                                </div>
                                 <div class="col">
                                     <a href="#comments"><i class="bi bi-chat-dots"></i> Add a Comment</a>
                                 </div>
@@ -65,4 +71,5 @@
                 <!-- Add comments section here -->
             </section>
         </div>
-        <%- include("foot") %>
+        <% }); %>
+            <%- include("foot") %>
