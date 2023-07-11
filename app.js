@@ -6,15 +6,31 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const path = require("path");
 const connection = require("./config/db.js");
+const cookieParser = require("cookie-parser");
+const sessions = require("express-session");
 
+const oneHour = 1000 * 60 * 60 * 1;
+
+app.use(cookieParser());
+
+app.use(
+  sessions({
+    secret: "myprofile234",
+    saveUninitialized: true,
+    cookie: { maxAge: oneHour },
+    resave: false,
+  })
+);
+
+//middlesware to use the EJS template engine
 app.set("view engine", "ejs");
+
 // Set the directory from which static files (CSS and JavaScript) will be served
 app.use(express.static(path.join(__dirname, "./public")));
 
 // Allows the server to parse JSON data sent in the body of incoming requests
 app.use(express.json());
-//allows the server to parse data sent in the 'application/x-www-form-urlencoded' format,
-// which is commonly used by HTML forms. The "extended" set to true allows parsing of complex objects
+// middleware to be able to POST <form> data. The "extended" set to true allows parsing of complex objects
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
@@ -113,6 +129,38 @@ app.post("/register", (req, res) => {
   const title = "Welcome";
   let userData = req.body;
   res.render("register", { sentback: userData, tdata: title });
+});
+
+app.post("/", (req, res) => {
+  const { username, password } = req.body;
+
+  let sql = "SELECT * FROM user WHERE username = ? AND password = ?";
+  connection.query(sql, [username, password], (err, rows) => {
+    if (err) throw err;
+    let numRows = rows.length;
+    if (numRows > 0) {
+      req.session.authen = rows[0].user_id; // Store the user ID in the session
+      res.redirect("/dashboard");
+    } else {
+      res.redirect("/");
+    }
+  });
+});
+
+app.get("/dashboard", (req, res) => {
+  let title = "Profile";
+  let sessionObj = req.session;
+  if (sessionObj.authen) {
+    let userId = sessionObj.authen;
+    let userSql = "SELECT * FROM user WHERE user_id = ?";
+    connection.query(userSql, [userId], (err, rows) => {
+      if (err) throw err;
+      let userData = rows[0];
+      res.render("dashboard", { tdata: title, userdata: userData });
+    });
+  } else {
+    res.send("Access denied");
+  }
 });
 
 // Start the server, listening on the specified PORT
