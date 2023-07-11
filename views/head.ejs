@@ -32,22 +32,36 @@
     <div class="icons">
         <div class="fas fa-bars" id="menu-btn"></div>
         <div class="fas fa-search" id="search-btn"></div>
-        <div class="fas fa-user" id="login-btn"></div>
+        <% if (loggedIn) { %>
+            <% /* Remove the user icon */ %>
+                <% } else { %>
+                    <div class="fas fa-user" id="login-btn"></div>
     </div>
+    <% } %>
 
-    <!-- Search form -->
-    <form action="./app" method="GET" class="search-form">
-        <input type="search" id="search-box" name="search" placeholder="search..." />
-        <label for="search-box" class="fas fa-search"></label>
-    </form>
+        <!-- Search form -->
+        <form action="/search" method="GET" class="search-form">
+            <input type="search" id="search-box" name="search" placeholder="search..." />
+            <label for="search-box"></label>
+        </form>
 
-    <!-- Login form -->
-    <form action="/" method="POST" class="login-form">
-        <p class="login">login</p>
-        <input type="text" name="username" placeholder="username" class="box" />
-        <input type="password" name="password" placeholder="password" class="box" />
-        <input type="submit" value="login" class="button" />
-        <p>no account? <a href="/register">sign up</a></p>
-    </form>
+        <% if (loggedIn) { %>
+            <!-- Show logout button -->
+            <form action="/logout" method="POST" class="logout-form">
+                <button type="submit" id="logout-button">
+                    <div class="icon">
+                        <div class="fas fa-sign-out"></div>
+                </button>
+            </form>
+            <% } else { %>
+                <!-- Login form -->
+                <form action="/" method="POST" class="login-form">
+                    <p class="login">login</p>
+                    <input type="text" name="username" placeholder="username" class="box" />
+                    <input type="password" name="password" placeholder="password" class="box" />
+                    <input type="submit" value="login" class="button" />
+                    <p>no account? <a href="/register">sign up</a></p>
+                </form>
+                <% } %>
 </header>
 <!-- header section ends -->

@@ -22,6 +22,12 @@ app.use(
   })
 );
 
+// middleware to keep the user logged in
+app.use((req, res, next) => {
+  res.locals.loggedIn = req.session.authen ? true : false;
+  next();
+});
+
 //middlesware to use the EJS template engine
 app.set("view engine", "ejs");
 
@@ -35,7 +41,14 @@ app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
   const title = "Family Tree Deals";
-  res.render("index", { tdata: title });
+  let sql =
+    "SELECT deal.*, COUNT(deal_up_vote.deal_id) AS vote_count FROM deal LEFT JOIN deal_up_vote ON deal.deal_id = deal_up_vote.deal_id GROUP BY deal.deal_id ORDER BY vote_count DESC";
+  connection.query(sql, (err, data) => {
+    if (err) {
+      throw err;
+    }
+    res.render("index", { tdata: title, deals: data });
+  });
 });
 
 app.get("/deals", (req, res) => {
@@ -96,6 +109,21 @@ app.get("/merchants", (req, res) => {
   });
 });
 
+app.get("/merchants/:merchantId/deals", (req, res) => {
+  const title = "Merchant Results";
+  const merchantId = req.params.merchantId;
+  let sql =
+    "SELECT * FROM deal JOIN merchant ON deal.merchant_id = merchant.merchant_id WHERE merchant.merchant_id = ?";
+  connection.query(sql, [merchantId], (err, results) => {
+    if (err) {
+      throw err;
+    } else {
+      console.log(results);
+      res.render("deals", { tdata: title, deals: results });
+    }
+  });
+});
+
 app.get("/categories", (req, res) => {
   const title = "Categories";
   res.render("categories", { tdata: title });
@@ -117,6 +145,27 @@ app.get("/categories/:categorySlug", (req, res) => {
     res.render("deals", { tdata: title, deals: data });
     console.log(data);
   });
+});
+
+app.get("/search", (req, res) => {
+  const title = "Search Results";
+  const searchQuery = req.query.search;
+  const sql = `SELECT * FROM deal 
+WHERE title LIKE ? OR description LIKE ?`;
+  connection.query(
+    sql,
+    [`%${searchQuery}%`, `%${searchQuery}%`],
+    (err, data) => {
+      if (err) {
+        throw err;
+      }
+      if (data.length === 0) {
+        res.send("No search results found...");
+      } else {
+        res.render("deals", { tdata: title, deals: data });
+      }
+    }
+  );
 });
 
 app.get("/register", (req, res) => {
@@ -156,7 +205,8 @@ app.get("/dashboard", (req, res) => {
     connection.query(userSql, [userId], (err, rows) => {
       if (err) throw err;
       let userData = rows[0];
-      res.render("dashboard", { tdata: title, userdata: userData });
+      let loggedIn = true;
+      res.render("dashboard", { tdata: title, userdata: userData, loggedIn });
     });
   } else {
     res.send("Access denied");

@@ -1,48 +1,59 @@
-// This script manages the visibility of the search bar, login form and navbar
+// This script manages the visibility of the search bar, login form, and navbar
 // when different buttons are clicked and also when the window scrolls
 
-// The search bar is toggled when user clicks the search icon
+// The search bar is toggled when the user clicks the search icon
 let searchForm = document.querySelector(".search-form");
 
 document.querySelector("#search-btn").onclick = () => {
   // Toggling the visibility of the search form
   searchForm.classList.toggle("show");
 
-  // Ensuring that the login form and the navbar are hidden when search form is active
-  loginForm.classList.remove("show");
+  // Ensuring that the login form and the navbar are hidden when the search form is active
+  loginForm?.classList.remove("show");
   navbar.classList.remove("show");
 };
 
-// The login form is toggled when user clicks the login button
+// The login form is toggled when the user clicks the login button
 let loginForm = document.querySelector(".login-form");
 
-document.querySelector("#login-btn").onclick = () => {
-  // Toggling the visibility of the login form
-  loginForm.classList.toggle("show");
+if (loginForm) {
+  // Only add the event listener if the login form exists
+  document.querySelector("#login-btn").onclick = () => {
+    // Toggling the visibility of the login form
+    loginForm.classList.toggle("show");
 
-  // Ensuring that the search form and the navbar are hidden when login form is active
-  searchForm.classList.remove("show");
-  navbar.classList.remove("show");
-};
+    // Ensuring that the search form and the navbar are hidden when the login form is active
+    searchForm.classList.remove("show");
+    navbar.classList.remove("show");
+  };
+}
 
-// The navbar is toggled when user clicks the menu button
+// The navbar is toggled when the user clicks the menu button
 let navbar = document.querySelector(".navbar");
 
 document.querySelector("#menu-btn").onclick = () => {
   // Toggling the visibility of the navbar
   navbar.classList.toggle("show");
 
-  // Ensuring that the search form and the login form are hidden when navbar is active
+  // Ensuring that the search form and the login form are hidden when the navbar is active
   searchForm.classList.remove("show");
-  loginForm.classList.remove("show");
+  loginForm?.classList.remove("show");
 };
 
-// The search form, login form and navbar are hidden when window scrolls
+// The search form, login form, and navbar are hidden when the window scrolls
 window.onscroll = () => {
   searchForm.classList.remove("show");
-  loginForm.classList.remove("show");
+  loginForm?.classList.remove("show");
   navbar.classList.remove("show");
 };
+
+let loggedIn = loggedIn;
+
+if (loggedIn) {
+  // Remove the user icon
+  let userIcon = document.getElementById("login-btn");
+  userIcon.parentNode.removeChild(userIcon);
+}
 
 // This script initializes the swiper slider with specified configuration.
 
@@ -109,8 +120,8 @@ document.getElementById("register-Form").addEventListener("submit", (event) => {
   if (!email.match(emailPattern)) {
     errorMessages.push("Please enter a valid email.");
   }
-  if (username.length < 4) {
-    errorMessages.push("Username should be at least 4 characters long.");
+  if (username.length < 3) {
+    errorMessages.push("Username should be at least 3 characters long.");
   }
   if (password != confirmPassword) {
     errorMessages.push("Passwords do not match.");
