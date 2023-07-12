@@ -1,7 +1,6 @@
-// Use dotenv to load environment variables from .env file into process.env for secure, flexible configuration
-//require("dotenv").config();
 const express = require("express");
 const app = express();
+
 // Define the PORT variable, use the value from the .env file if it's defined, otherwise use 3000
 const PORT = process.env.PORT || 3000;
 const path = require("path");
@@ -31,11 +30,12 @@ app.use((req, res, next) => {
 //middlesware to use the EJS template engine
 app.set("view engine", "ejs");
 
-// Set the directory from which static files (CSS and JavaScript) will be served
+// set the directory from which static files (CSS and JavaScript) will be served
 app.use(express.static(path.join(__dirname, "./public")));
 
 // Allows the server to parse JSON data sent in the body of incoming requests
 app.use(express.json());
+
 // middleware to be able to POST <form> data. The "extended" set to true allows parsing of complex objects
 app.use(express.urlencoded({ extended: true }));
 
@@ -129,6 +129,7 @@ app.get("/categories", (req, res) => {
   res.render("categories", { tdata: title });
 });
 
+// fetch all deals from a specific category based on its slug
 app.get("/categories/:categorySlug", (req, res) => {
   const title = "Bargains";
   const categorySlug = req.params.categorySlug;
@@ -211,6 +212,17 @@ app.get("/dashboard", (req, res) => {
   } else {
     res.send("Access denied");
   }
+});
+
+app.post("/logout", (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.log(err);
+    }
+    setTimeout(() => {
+      res.redirect("/");
+    }, 2000);
+  });
 });
 
 // Start the server, listening on the specified PORT

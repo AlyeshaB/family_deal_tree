@@ -1,17 +1,27 @@
+// Use dotenv to load environment variables from .env file into process.env for secure, flexible configuration
+require("dotenv").config();
+
 let mysql = require("mysql");
-let db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "", //this also could be root
-  database: "family_tree_deal",
-  port: "3306",
+
+// a connection pool is a place where connections are stored.
+let db = mysql.createPool({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PW,
+  database: process.env.DB_NAME,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 10,
+  port: process.env.DB_PORT,
+  multipleStatements: true,
 });
 
-try {
-  db.connect();
-  console.log("Connected to the MySQL server");
-} catch (error) {
-  console.error(`Error: ${error.message}`);
-}
+db.getConnection((err, db) => {
+  if (err) {
+    console.error(`Error connecting to the database: ${err.message}`);
+  } else {
+    console.log("Connected to the MySQL server using .env properties");
+  }
+});
 
 module.exports = db;
