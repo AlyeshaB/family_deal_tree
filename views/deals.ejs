@@ -1,5 +1,6 @@
 <%- include("top") %>
     <%- include("head") %>
+
         <div class="container-box">
             <div class="container-lg my-5">
                 <h2>So many deals ... see them all!</h2>
@@ -10,9 +11,18 @@
                                 <img class="card-img-top" src="<%= deal.deal_image_uri %>"
                                     alt="<%= deal.title %> Image">
                                 <div class="card-icon">
-                                    <a href="#" class="btn btn-outline-secondary">
-                                        <i class="fa fa-bookmark" aria-hidden="true"></i> <!-- Save icon -->
-                                    </a>
+                                    <% if (loggedIn) { %>
+                                        <form id="saveDealForm" action="/saveDeal" method="post">
+                                            <input type="hidden" name="dealId" value="<%= deal.deal_id %>">
+                                            <button type="submit" class="btn btn-outline-secondary">
+                                                <i class="fa fa-bookmark" aria-hidden="true"></i>
+                                            </button>
+                                        </form>
+                                        <% } else { %>
+                                            <a href="/register" class="btn btn-outline-secondary">
+                                                <i class="fa fa-bookmark" aria-hidden="true"></i> <!-- Save icon -->
+                                            </a>
+                                            <% } %>
                                 </div>
                                 <div class="card-body">
                                     <h3 class="card-title">
@@ -24,7 +34,8 @@
                                         - You save €<%=(deal.original_price - deal.price).toFixed(2) %>!
                                     </p>
                                     <div class="button-wrapper">
-                                        <a href="/deals/<%= deal.deal_id %>" class="btn btn-primary">View Deal</a>
+                                        <a href="/deals/<%= deal.deal_id %>" class="btn btn-primary">View
+                                            Deal</a>
                                         <a href="#" class="btn btn-outline-secondary">
                                             <i class="fas fa-heart"></i>
                                         </a>

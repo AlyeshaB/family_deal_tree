@@ -47,7 +47,7 @@ window.onscroll = () => {
   navbar.classList.remove("show");
 };
 
-let loggedIn = loggedIn;
+let loggedIn;
 
 if (loggedIn) {
   // Remove the user icon
@@ -56,7 +56,6 @@ if (loggedIn) {
 }
 
 // This script initializes the swiper slider with specified configuration.
-
 var swiper = new Swiper(".swiper-slider", {
   // Images will loop from the end to the beginning and vice versa.
   loop: true,

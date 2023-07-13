@@ -4,6 +4,7 @@ const app = express();
 // Define the PORT variable, use the value from the .env file if it's defined, otherwise use 3000
 const PORT = process.env.PORT || 3000;
 const path = require("path");
+const axios = require("axios");
 const connection = require("./config/db.js");
 const cookieParser = require("cookie-parser");
 const sessions = require("express-session");
@@ -14,7 +15,7 @@ app.use(cookieParser());
 
 app.use(
   sessions({
-    secret: "myprofile234",
+    secret: process.env.SESSION_SECRET,
     saveUninitialized: true,
     cookie: { maxAge: oneHour },
     resave: false,
@@ -58,7 +59,10 @@ app.get("/deals", (req, res) => {
     if (err) {
       throw err;
     }
-    res.render("deals", { tdata: title, deals: data });
+    res.render("deals", {
+      tdata: title,
+      deals: data,
+    });
   });
 });
 
@@ -174,11 +178,44 @@ app.get("/register", (req, res) => {
   res.render("register", { tdata: title });
 });
 
+// post route to send user sign up data to database
 app.post("/register", (req, res) => {
-  console.log(req.body);
-  const title = "Welcome";
-  let userData = req.body;
-  res.render("register", { sentback: userData, tdata: title });
+  const title = "Sign up";
+  const { firstName, secondName, username, email, password } = req.body;
+
+  // Basic validation
+  if (!firstName || !secondName || !username || !email || !password) {
+    return res.status(400).json({ error: "All fields are required" });
+  }
+
+  // Validate email format using a regular expression
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({ error: "Invalid email format" });
+  }
+
+  const user = {
+    first_name: firstName,
+    second_name: secondName,
+    username,
+    email,
+    password,
+    sign_up_date: new Date().toISOString().slice(0, 19).replace("T", " "),
+  };
+
+  const sql = "INSERT INTO user SET ?";
+  connection.query(sql, user, (err, result) => {
+    if (err) {
+      console.error(err);
+      res.render("register", { tdata: title });
+    } else {
+      console.log("User registered successfully");
+      // Store the user's session information
+      req.session.authen = true;
+      req.session.user = user;
+      res.render("register", { sentback: user, tdata: title });
+    }
+  });
 });
 
 app.post("/", (req, res) => {
@@ -211,6 +248,92 @@ app.get("/dashboard", (req, res) => {
     });
   } else {
     res.send("Access denied");
+  }
+});
+
+app.post("/saveDeal", (req, res) => {
+  let title = "Bargains";
+  let sessionObj = req.session;
+  if (sessionObj.authen) {
+    let userId = sessionObj.authen;
+
+    // Retrieve the deal ID from the request body
+    const dealId = req.body.dealId;
+
+    // Save the deal in the user_deal table
+    const sql = "INSERT INTO user_deal (user_id, deal_id) VALUES (?, ?)";
+    connection.query(sql, [userId, dealId], (err, result) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({ error: "Failed to save the deal" });
+      } else {
+        console.log(`Deal saved successfully for user ID: ${userId}`);
+        res.redirect("/deals");
+      }
+    });
+  }
+});
+
+app.post("/saveVoucher", (req, res) => {
+  let title = "Voucher";
+  let sessionObj = req.session;
+  if (sessionObj.authen) {
+    let userId = sessionObj.authen;
+
+    // retrieve the voucher ID from the request body
+    const voucherId = req.body.voucherId;
+
+    // Save the voucher in the voucher_deal table
+    const sql = "INSERT INTO user_voucher (user_id, voucher_id) VALUES (?, ?)";
+    connection.query(sql, [userId, voucherId], (err, result) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({ error: "Failed to save the voucher" });
+      } else {
+        console.log(`Voucher saved successfully for user ID: ${userId}`);
+        res.redirect("vouchers");
+      }
+    });
+  }
+});
+
+app.get("/savedDeals", (req, res) => {
+  let title = "Saved Deals";
+  // Retrieve the user's saved deals from the database
+  let sessionObj = req.session;
+  if (sessionObj.authen) {
+    let userId = sessionObj.authen;
+    const sql =
+      "SELECT deal.* FROM deal INNER JOIN user_deal ON deal.deal_id = user_deal.deal_id WHERE user_deal.user_id = ?";
+    connection.query(sql, [userId], (err, result) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send("Error retrieving saved deals");
+      } else {
+        // Render the 'deals' view with the retrieved deals data
+        res.render("deals", { tdata: title, deals: result });
+      }
+    });
+  }
+});
+
+app.get("/savedVouchers", (req, res) => {
+  let title = "Saved Vouchers";
+  // Retrieve the user's saved vouchers from the database
+  let sessionObj = req.session;
+  if (sessionObj.authen) {
+    let userId = sessionObj.authen;
+    const sql =
+      "SELECT voucher.* FROM voucher INNER JOIN user_voucher ON voucher.voucher_id = user_voucher.voucher_id WHERE user_voucher.user_id = ?";
+    connection.query(sql, [userId], (err, result) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send("Error retrieving saved vouchers");
+      } else {
+        // Render the 'vouchers' view with the retrieved deals data
+        res.render("vouchers", { tdata: title, vouchers: result });
+      }
+    });
   }
 });
 

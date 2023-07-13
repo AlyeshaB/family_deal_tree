@@ -188,8 +188,18 @@ ul:hover,
 #logout-button {
   height: 4.5rem;
   width: 4.5rem;
+  /*  defines the amount of space above and below inline elements */
+  line-height: 4.5rem;
   border-radius: 0.5rem;
-  margin-top: 0.5rem;
+  background-color: #eee;
+  color: #06060a;
+  font-size: 2rem;
+  margin-right: 0.3rem;
+  text-align: center;
+}
+
+#signout-btn {
+  font-size: 2rem;
 }
 
 .header .search-form {
@@ -288,8 +298,10 @@ ul:hover,
 }
 
 .c-img {
+  width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center; /* Adjust as needed */
 }
 
 body {

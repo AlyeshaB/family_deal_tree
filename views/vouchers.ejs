@@ -10,9 +10,18 @@
                                 <img class="card-img-top" src="<%= voucher.merchant_image_uri %>"
                                     alt="<%= voucher.merchant_name %> logo">
                                 <div class="card-icon">
-                                    <a href="#" class="btn btn-outline-secondary">
-                                        <i class="fa fa-bookmark" aria-hidden="true"></i> <!-- Save icon -->
-                                    </a>
+                                    <% if (loggedIn) { %>
+                                        <form id="saveVoucherForm" action="/saveVoucher" method="post">
+                                            <input type="hidden" name="voucherId" value="<%= voucher.voucher_id %>">
+                                            <button type="submit" class="btn btn-outline-secondary">
+                                                <i class="fa fa-bookmark" aria-hidden="true"></i>
+                                            </button>
+                                        </form>
+                                        <% } else { %>
+                                            <a href="/register" class="btn btn-outline-secondary">
+                                                <i class="fa fa-bookmark" aria-hidden="true"></i> <!-- Save icon -->
+                                            </a>
+                                            <% } %>
                                 </div>
                                 <div class="card-body">
                                     <h3 class="card-title">
