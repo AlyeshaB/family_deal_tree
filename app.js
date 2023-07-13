@@ -7,10 +7,12 @@ const path = require("path");
 const axios = require("axios");
 const connection = require("./config/db.js");
 const cookieParser = require("cookie-parser");
+
+// enables the server to store session information for each client and associate it with a unique session ID
 const sessions = require("express-session");
 
 const oneHour = 1000 * 60 * 60 * 1;
-
+// used for maintaining session state, storing user preferences, and tracking user behavior
 app.use(cookieParser());
 
 app.use(
@@ -91,7 +93,7 @@ app.get("/deals/:deal_id", (req, res) => {
 app.get("/vouchers", (req, res) => {
   const title = "Vouchers";
   let sql =
-    "SELECT voucher.voucher_id, voucher.title, voucher.discount, voucher.merchant_id, merchant.* FROM voucher JOIN merchant ON voucher.merchant_id = merchant.merchant_id";
+    "SELECT voucher.voucher_id, voucher.title, voucher.merchant_id, merchant.* FROM voucher JOIN merchant ON voucher.merchant_id = merchant.merchant_id";
   connection.query(sql, (err, data) => {
     if (err) {
       throw err;

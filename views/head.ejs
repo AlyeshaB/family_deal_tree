@@ -34,7 +34,9 @@
         <div class="fas fa-search" id="search-btn"></div>
         <% if (loggedIn) { %>
             <% /* Do something if the user is logged in */ %>
-                <div class="fas fa-user"></div>
+                <a href="/dashboard">
+                    <div class="fas fa-user"></div>
+                </a>
                 <% } else { %>
                     <!-- Show user icon if not logged in -->
                     <div class="fas fa-user" id="login-btn"></div>

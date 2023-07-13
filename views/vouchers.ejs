@@ -28,10 +28,11 @@
                                         <%= voucher.title %>
                                     </h3>
                                     <p class="card-text">
-                                        <strong>€<%= voucher.discount %></strong>
 
                                     </p>
-                                    <a href="/voucherCode" class="btn btn-primary">View Code</a>
+                                    <a href="/voucherCode" class="btn btn-primary">
+                                        <%=voucher.voucher_code %>
+                                    </a>
                                     <a href="#" class="btn btn-outline-secondary">
                                         <i class="fas fa-heart"></i>
                                     </a>
