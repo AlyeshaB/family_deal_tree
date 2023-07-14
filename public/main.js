@@ -63,9 +63,9 @@ var swiper = new Swiper(".swiper-slider", {
   // The space between each slide
   spaceBetween: 20,
 
-  // Autoplay configuration. The slider will auto-slide after 7.5s and will not stop auto-sliding when user interaction is detected
+  // Autoplay configuration. The slider will auto-slide after 5.5s and will not stop auto-sliding when user interaction is detected
   autoplay: {
-    delay: 6500,
+    delay: 5500,
     disableOnInteraction: false,
   },
 
@@ -94,50 +94,4 @@ var swiper = new Swiper(".swiper-slider", {
       spaceBetween: 40,
     },
   },
-});
-
-// Add an event listener for the 'submit' event on the form with the id 'register-Form'
-document.getElementById("register-Form").addEventListener("submit", (event) => {
-  let firstName = document.getElementById("firstName").value;
-  let lastName = document.getElementById("lastName").value;
-  let email = document.getElementById("email").value;
-  const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/; // Simple email pattern
-  let username = document.getElementById("username").value;
-  let password = document.getElementById("password").value;
-  let confirmPassword = document.getElementById("confirm-password").value;
-
-  // Create an array to hold error messages
-  let errorMessages = [];
-
-  // Check fields
-  if (firstName == "") {
-    errorMessages.push("First name is required.");
-  }
-  if (lastName == "") {
-    errorMessages.push("Last name is required.");
-  }
-  if (!email.match(emailPattern)) {
-    errorMessages.push("Please enter a valid email.");
-  }
-  if (username.length < 3) {
-    errorMessages.push("Username should be at least 3 characters long.");
-  }
-  if (password != confirmPassword) {
-    errorMessages.push("Passwords do not match.");
-  }
-
-  // If there were errors, prevent form submission and display errors
-  if (errorMessages.length > 0) {
-    event.preventDefault();
-
-    // Clear any previous error messages
-    document.getElementById("errorMessages").innerHTML = "";
-
-    // Display error messages
-    errorMessages.forEach((error) => {
-      let li = document.createElement("li");
-      li.textContent = error;
-      document.getElementById("errorMessages").appendChild(li);
-    });
-  }
 });

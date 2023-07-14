@@ -3,7 +3,7 @@
 /* set up some general styles for all elements */
 * {
   font-family: "Poppins", sans-serif;
-  margin: 0;
+  margin: 0rem;
   padding: 0;
   /* include the padding and border in an element's total width and height */
   box-sizing: border-box;
@@ -520,6 +520,14 @@ body {
   margin-top: 1.8rem;
   padding-left: 1rem;
   font-size: 1.6rem;
+}
+
+.add-deal {
+  margin-top: 10.5rem;
+}
+
+.form-label {
+  font-size: 1.5rem;
 }
 
 /* media queries */

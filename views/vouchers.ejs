@@ -3,6 +3,18 @@
         <div class="container-box">
             <div class="container-lg my-5">
                 <h2>So many vouchers ... redeem them all!</h2>
+                <!-- Dropdown component -->
+                <div class="dropdown mb-4">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Filter
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="/Vouchers">All</a>
+                        <a class="dropdown-item" href="/likedVouchers">Most Liked</a>
+                        <a class="dropdown-item" href="/expiresSoon">Expires Soon</a>
+                    </ul>
+                </div>
                 <div class="row mb-4">
                     <% vouchers.forEach((voucher)=> { %>
                         <div class="col-sm-4 col-lg-4">

@@ -12,6 +12,7 @@ const cookieParser = require("cookie-parser");
 const sessions = require("express-session");
 
 const oneHour = 1000 * 60 * 60 * 1;
+
 // used for maintaining session state, storing user preferences, and tracking user behavior
 app.use(cookieParser());
 
@@ -131,6 +132,42 @@ app.get("/vouchers", (req, res) => {
     FROM voucher 
     JOIN merchant 
     ON voucher.merchant_id = merchant.merchant_id`;
+
+  connection.query(sql, (err, data) => {
+    if (err) {
+      throw err;
+    }
+    res.render("vouchers", { tdata: title, vouchers: data });
+  });
+});
+
+app.get("/likedVouchers", (req, res) => {
+  title = "Vouchers";
+
+  let sql = `
+  SELECT *, merchant.image_uri 
+  FROM voucher
+  LEFT JOIN merchant ON voucher.merchant_id = merchant.merchant_id
+  ORDER BY exp_date DESC`;
+
+  connection.query(sql, (err, data) => {
+    if (err) {
+      throw err;
+    }
+    res.render("vouchers", { tdata: title, vouchers: data });
+  });
+});
+
+app.get("/expiresSoon", (req, res) => {
+  title = "Vouchers";
+
+  let sql = `
+  SELECT *, merchant.image_uri, COUNT(voucher_up_vote.voucher_id) AS vote_count
+  FROM voucher
+  LEFT JOIN merchant ON voucher.merchant_id = merchant.merchant_id
+  LEFT JOIN voucher_up_vote ON voucher.voucher_id = voucher_up_vote.voucher_id
+  GROUP BY voucher.voucher_id
+  ORDER BY vote_count DESC`;
 
   connection.query(sql, (err, data) => {
     if (err) {
@@ -402,12 +439,18 @@ app.post("/likeVoucher", (req, res) => {
 
 app.get("/savedDeals", (req, res) => {
   let title = "Saved Deals";
+
   // Retrieve the user's saved deals from the database
   let sessionObj = req.session;
+
   if (sessionObj.authen) {
     let userId = sessionObj.authen;
-    const sql =
-      "SELECT deal.* FROM deal INNER JOIN user_deal ON deal.deal_id = user_deal.deal_id WHERE user_deal.user_id = ?";
+
+    const sql = `SELECT * FROM deal 
+       INNER JOIN user_deal 
+       ON deal.deal_id = user_deal.deal_id 
+       WHERE user_deal.user_id = ?`;
+
     connection.query(sql, [userId], (err, result) => {
       if (err) {
         console.error(err);
@@ -437,6 +480,15 @@ app.get("/savedVouchers", (req, res) => {
         res.render("vouchers", { tdata: title, vouchers: result });
       }
     });
+  }
+});
+
+app.get("/addDeal", (req, res) => {
+  let title = "Submit Deal";
+  let sessionObj = req.session;
+  if (sessionObj.authen) {
+    let userId = sessionObj.authen;
+    res.render("add_deal", { tdata: title });
   }
 });
 

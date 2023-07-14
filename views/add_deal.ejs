@@ -1,0 +1,60 @@
+<%- include("top") %>
+    <%- include("head") %>
+        <section class="my-4">
+            <div class="add-deal">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <h2>About This Deal</h2>
+                            <form id="dealForm">
+                                <div class="mb-3">
+                                    <label for="dealTitle" class="form-label">Title</label>
+                                    <input type="text" class="form-control" id="dealTitle" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="dealDescription" class="form-label">Description</label>
+                                    <textarea class="form-control" id="dealDescription" rows="4" required></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="dealLink" class="form-label">Link to Deal</label>
+                                    <input type="text" class="form-control" id="dealLink" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="dealImageLink" class="form-label">Image Link</label>
+                                    <input type="text" class="form-control" id="dealImageLink" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="dealOriginalPrice" class="form-label">Original Price</label>
+                                    <input type="number" class="form-control" id="dealOriginalPrice" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="dealPrice" class="form-label">Price</label>
+                                    <input type="number" class="form-control" id="dealPrice" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="dealMerchant" class="form-label">Merchant</label>
+                                    <input type="text" class="form-control" id="dealMerchant" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="dealCategory" class="form-label">Category</label>
+                                    <select class="form-select" id="dealCategory" name="dealCategory" required>
+                                        <option value="" disabled selected>Select a category</option>
+                                        <option value="1">home & living</option>
+                                        <option value="2">culture & leisure</option>
+                                        <option value="3">family & kids</option>
+                                        <option value="2">electronics</option>
+                                        <option value="3">sport & outdoors</option>
+                                        <option value="3">garden & DIY</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <%- include("foot") %>
