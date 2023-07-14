@@ -64,10 +64,11 @@
         <div class="container-lg my-5">
             <h2>popular on family tree deals</h2>
             <div class="row mb-4">
-                <% deals.forEach((deal)=> { %>
+                <% for (let i=0; i <21; i++) { %>
                     <div class="col-sm-4 col-lg-4">
                         <div class="card">
-                            <img class="card-img-top" src="<%= deal.deal_image_uri %>" alt="<%= deal.title %> Image">
+                            <img class="card-img-top" src="<%= deals[i].deal_image_uri %>"
+                                alt="<%= deals[i].title %> Image">
                             <div class="card-icon">
                                 <a href="#" class="btn btn-outline-secondary">
                                     <i class="fa fa-bookmark" aria-hidden="true"></i> <!-- Save icon -->
@@ -75,15 +76,15 @@
                             </div>
                             <div class="card-body">
                                 <h3 class="card-title">
-                                    <%= deal.title %>
+                                    <%= deals[i].title %>
                                 </h3>
                                 <p class="card-text">
-                                    <strong>€<%= deal.price %></strong>
-                                    <s>€<%= deal.original_price %></s>
-                                    - You save €<%=(deal.original_price - deal.price).toFixed(2) %>!
+                                    <strong>€<%= deals[i].price %></strong>
+                                    <s>€<%= deals[i].original_price %></s>
+                                    - You save €<%=(deals[i].original_price - deals[i].price).toFixed(2) %>!
                                 </p>
                                 <div class="button-wrapper">
-                                    <a href="/deals/<%= deal.deal_id %>" class="btn btn-primary">View Deal</a>
+                                    <a href="/deals/<%= deals[i].deal_id %>" class="btn btn-primary">View Deal</a>
                                     <a href="#" class="btn btn-outline-secondary">
                                         <i class="fas fa-heart"></i>
                                     </a>
@@ -91,7 +92,7 @@
                             </div>
                         </div>
                     </div>
-                    <% }); %>
+                    <% }; %>
             </div>
         </div>
 

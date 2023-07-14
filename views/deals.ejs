@@ -4,6 +4,18 @@
         <div class="container-box">
             <div class="container-lg my-5">
                 <h2>So many deals ... see them all!</h2>
+                <!-- Dropdown component -->
+                <div class="dropdown mb-4">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Filter
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="/Deals">All</a>
+                        <a class="dropdown-item" href="/mostLiked">Most Liked</a>
+                        <a class="dropdown-item" href="/mostRecent">Most Recent</a>
+                    </ul>
+                </div>
                 <div class="row mb-4">
                     <% deals.forEach((deal)=> { %>
                         <div class="col-sm-4 col-lg-4">
@@ -36,9 +48,18 @@
                                     <div class="button-wrapper">
                                         <a href="/deals/<%= deal.deal_id %>" class="btn btn-primary">View
                                             Deal</a>
-                                        <a href="#" class="btn btn-outline-secondary">
-                                            <i class="fas fa-heart"></i>
-                                        </a>
+                                        <% if (loggedIn) { %>
+                                            <form id="likeDealForm" action="/likeDeal" method="post">
+                                                <input type="hidden" name="dealId" value="<%= deal.deal_id %>">
+                                                <button type="submit" class="btn btn-outline-secondary">
+                                                    <i class="fas fa-heart" aria-hidden="true"></i>
+                                                </button>
+                                            </form>
+                                            <% } else { %>
+                                                <a href="/register" class="btn btn-outline-secondary">
+                                                    <i class="fas fa-heart"></i>
+                                                </a>
+                                                <% } %>
                                     </div>
                                 </div>
                             </div>

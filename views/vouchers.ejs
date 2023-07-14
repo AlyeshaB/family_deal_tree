@@ -7,21 +7,22 @@
                     <% vouchers.forEach((voucher)=> { %>
                         <div class="col-sm-4 col-lg-4">
                             <div class="card">
-                                <img class="card-img-top" src="<%= voucher.merchant_image_uri %>"
+                                <img class="card-img-top" src="<%= voucher.image_uri %>"
                                     alt="<%= voucher.merchant_name %> logo">
                                 <div class="card-icon">
                                     <% if (loggedIn) { %>
-                                        <form id="saveVoucherForm" action="/saveVoucher" method="post">
+                                        <form id="likeVoucherForm" action="/likeVoucher" method="post">
                                             <input type="hidden" name="voucherId" value="<%= voucher.voucher_id %>">
                                             <button type="submit" class="btn btn-outline-secondary">
-                                                <i class="fa fa-bookmark" aria-hidden="true"></i>
+                                                <i class="fas fa-heart" aria-hidden="true"></i>
                                             </button>
                                         </form>
                                         <% } else { %>
                                             <a href="/register" class="btn btn-outline-secondary">
-                                                <i class="fa fa-bookmark" aria-hidden="true"></i> <!-- Save icon -->
+                                                <i class="fas fa-heart"></i>
                                             </a>
                                             <% } %>
+
                                 </div>
                                 <div class="card-body">
                                     <h3 class="card-title">
@@ -33,9 +34,19 @@
                                     <a href="/voucherCode" class="btn btn-primary">
                                         <%=voucher.voucher_code %>
                                     </a>
-                                    <a href="#" class="btn btn-outline-secondary">
-                                        <i class="fas fa-heart"></i>
-                                    </a>
+                                    <% if (loggedIn) { %>
+                                        <form id="likeVoucherForm" action="/likeVoucher" method="post">
+                                            <input type="hidden" name="voucherId" value="<%= voucher.voucher_id %>">
+                                            <button type="submit" class="btn btn-outline-secondary">
+                                                <i class="fas fa-heart" aria-hidden="true"></i>
+                                            </button>
+                                        </form>
+                                        <% } else { %>
+                                            <a href="/register" class="btn btn-outline-secondary">
+                                                <i class="fas fa-heart"></i>
+                                            </a>
+                                            <% } %>
+
                                 </div>
                             </div>
                         </div>

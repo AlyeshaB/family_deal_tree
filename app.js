@@ -44,8 +44,13 @@ app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
   const title = "Family Tree Deals";
-  let sql =
-    "SELECT deal.*, COUNT(deal_up_vote.deal_id) AS vote_count FROM deal LEFT JOIN deal_up_vote ON deal.deal_id = deal_up_vote.deal_id GROUP BY deal.deal_id ORDER BY vote_count DESC";
+
+  let sql = `SELECT *, COUNT(deal_up_vote.deal_id) AS vote_count
+    FROM deal
+    LEFT JOIN deal_up_vote ON deal.deal_id = deal_up_vote.deal_id
+    GROUP BY deal.deal_id
+    ORDER BY vote_count DESC`;
+
   connection.query(sql, (err, data) => {
     if (err) {
       throw err;
@@ -72,7 +77,7 @@ app.get("/deals/:deal_id", (req, res) => {
   const dealId = req.params.deal_id;
 
   // Use dealId to fetch the specific deal's details from the database
-  const sql = "SELECT * FROM deal WHERE deal_id = ?";
+  const sql = `SELECT * FROM deal WHERE deal_id = ?`;
 
   connection.query(sql, [dealId], (err, data) => {
     if (err) {
@@ -90,10 +95,43 @@ app.get("/deals/:deal_id", (req, res) => {
   });
 });
 
+app.get("/mostLiked", (req, res) => {
+  title = "Bargains";
+
+  let sql = `SELECT *, COUNT(deal_up_vote.deal_id) AS vote_count
+  FROM deal
+  LEFT JOIN deal_up_vote ON deal.deal_id = deal_up_vote.deal_id
+  GROUP BY deal.deal_id
+  ORDER BY vote_count DESC`;
+
+  connection.query(sql, (err, data) => {
+    if (err) {
+      throw err;
+    }
+    res.render("deals", { tdata: title, deals: data });
+  });
+});
+
+app.get("/mostRecent", (req, res) => {
+  title = "Bargains";
+
+  let sql = `SELECT * FROM deal ORDER BY post_date DESC`;
+
+  connection.query(sql, (err, data) => {
+    if (err) {
+      throw err;
+    }
+    res.render("deals", { tdata: title, deals: data });
+  });
+});
+
 app.get("/vouchers", (req, res) => {
   const title = "Vouchers";
-  let sql =
-    "SELECT voucher.voucher_id, voucher.title, voucher.merchant_id, merchant.* FROM voucher JOIN merchant ON voucher.merchant_id = merchant.merchant_id";
+  let sql = `SELECT voucher.voucher_id, voucher.title, voucher.merchant_id, merchant.image_uri 
+    FROM voucher 
+    JOIN merchant 
+    ON voucher.merchant_id = merchant.merchant_id`;
+
   connection.query(sql, (err, data) => {
     if (err) {
       throw err;
@@ -104,7 +142,9 @@ app.get("/vouchers", (req, res) => {
 
 app.get("/merchants", (req, res) => {
   const title = "Merchants";
-  let sql = "SELECT * FROM merchant ORDER BY merchant_name ASC";
+
+  let sql = `SELECT * FROM merchant ORDER BY merchant_name ASC`;
+
   connection.query(sql, (err, results) => {
     if (err) {
       throw err;
@@ -117,9 +157,14 @@ app.get("/merchants", (req, res) => {
 
 app.get("/merchants/:merchantId/deals", (req, res) => {
   const title = "Merchant Results";
+
   const merchantId = req.params.merchantId;
-  let sql =
-    "SELECT * FROM deal JOIN merchant ON deal.merchant_id = merchant.merchant_id WHERE merchant.merchant_id = ?";
+
+  let sql = `SELECT * 
+    FROM deal 
+    JOIN merchant ON deal.merchant_id = merchant.merchant_id 
+    WHERE merchant.merchant_id = ?`;
+
   connection.query(sql, [merchantId], (err, results) => {
     if (err) {
       throw err;
@@ -138,7 +183,9 @@ app.get("/categories", (req, res) => {
 // fetch all deals from a specific category based on its slug
 app.get("/categories/:categorySlug", (req, res) => {
   const title = "Bargains";
+
   const categorySlug = req.params.categorySlug;
+
   const sql = `SELECT deal.*, category.category_name 
   FROM deal 
   JOIN deal_category ON deal.deal_id = deal_category.deal_id 
@@ -156,9 +203,12 @@ app.get("/categories/:categorySlug", (req, res) => {
 
 app.get("/search", (req, res) => {
   const title = "Search Results";
+
   const searchQuery = req.query.search;
+
   const sql = `SELECT * FROM deal 
-WHERE title LIKE ? OR description LIKE ?`;
+  WHERE title LIKE ? OR description LIKE ?`;
+
   connection.query(
     sql,
     [`%${searchQuery}%`, `%${searchQuery}%`],
@@ -293,6 +343,57 @@ app.post("/saveVoucher", (req, res) => {
         res.status(500).json({ error: "Failed to save the voucher" });
       } else {
         console.log(`Voucher saved successfully for user ID: ${userId}`);
+        res.redirect("vouchers");
+      }
+    });
+  }
+});
+
+app.post("/likeDeal", (req, res) => {
+  let title = "Bargains";
+
+  let sessionObj = req.session;
+
+  if (sessionObj.authen) {
+    let userId = sessionObj.authen;
+
+    // Retrieve the deal ID from the request body
+    const dealId = req.body.dealId;
+
+    // Save the deal in the user_deal table
+    const sql = `INSERT INTO deal_up_vote (deal_id, user_id) VALUES (?, ?)`;
+
+    connection.query(sql, [dealId, userId], (err, result) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({ error: "Failed to like the deal" });
+      } else {
+        console.log(`Deal liked successfully for user ID: ${userId}`);
+        res.redirect("/deals");
+      }
+    });
+  }
+});
+
+app.post("/likeVoucher", (req, res) => {
+  let title = "Voucher";
+
+  let sessionObj = req.session;
+
+  if (sessionObj.authen) {
+    let userId = sessionObj.authen;
+
+    // retrieve the voucher ID from the request body
+    const voucherId = req.body.voucherId;
+
+    // Save the voucher in the voucher_deal table
+    const sql = `INSERT INTO voucher_up_vote (user_id, voucher_id) VALUES (?, ?)`;
+    connection.query(sql, [userId, voucherId], (err, result) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({ error: "Failed to liked the voucher" });
+      } else {
+        console.log(`Voucher liked successfully for user ID: ${userId}`);
         res.redirect("vouchers");
       }
     });

@@ -134,7 +134,7 @@ document.getElementById("register-Form").addEventListener("submit", (event) => {
     document.getElementById("errorMessages").innerHTML = "";
 
     // Display error messages
-    errorMessages.forEach(function (error) {
+    errorMessages.forEach((error) => {
       let li = document.createElement("li");
       li.textContent = error;
       document.getElementById("errorMessages").appendChild(li);
