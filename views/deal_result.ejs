@@ -16,13 +16,15 @@
                                         <h5 class="card-title">
                                             <%= deal.title %>
                                         </h5>
-                                        <p class="card-text">Original Price: € <%= deal.original_price %>
+                                        <p class="card-text">Original Price: £ <%= deal.original_price %>
                                         </p>
-                                        <p class="card-text">Discount Price: € <%= deal.price%>
+                                        <p class="card-text">Discount Price: £ <%= deal.price%>
                                         </p>
-                                        <a href="<%= deal.deal_uri %>" class="btn btn-primary">Get Deal</a>
-                                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                                            data-bs-target="#voucherModal">Add Voucher Code</button>
+                                        <!-- target="_blank" opens links in a new tab -->
+                                        <!--rel="noopener noreferrer" prevents new page from accessing data-->
+                                        <div class="shop-link"><a href="<%= deal.deal_uri %>" target="_blank"
+                                                rel="noopener noreferrer" class="btn btn-primary">Get Deal</a></div>
+
                                     </div>
                                 </div>
                         </div>
@@ -40,7 +42,12 @@
                                         <div class="col">
                                             <h2>About This Deal</h2>
                                             <div id="dealDetails">
-                                                <%= deal.description %>
+                                                <% let lines=deal.description.split('\n'); lines.forEach((line)=> {
+                                                    %>
+                                                    <p>
+                                                        <%= line %>
+                                                    </p>
+                                                    <% }); %>
                                             </div>
                                         </div>
                                     </div>

@@ -11,9 +11,9 @@
                         Filter
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="/Deals">All</a>
-                        <a class="dropdown-item" href="/mostLiked">Most Liked</a>
-                        <a class="dropdown-item" href="/mostRecent">Most Recent</a>
+                        <a class="dropdown-item" href="/deals">All</a>
+                        <a class="dropdown-item" href="/deals/liked">Most Liked</a>
+                        <a class="dropdown-item" href="/deals/recent">Most Recent</a>
                     </ul>
                 </div>
                 <div class="row mb-4">
@@ -41,9 +41,9 @@
                                         <%= deal.title %>
                                     </h3>
                                     <p class="card-text">
-                                        <strong>€<%= deal.price %></strong>
-                                        <s>€<%= deal.original_price %></s>
-                                        - You save €<%=(deal.original_price - deal.price).toFixed(2) %>!
+                                        <strong>£<%= deal.price %></strong>
+                                        <s>£<%= deal.original_price %></s>
+                                        - You save £<%=(deal.original_price - deal.price).toFixed(2) %>!
                                     </p>
                                     <div class="button-wrapper">
                                         <a href="/deals/<%= deal.deal_id %>" class="btn btn-primary">View

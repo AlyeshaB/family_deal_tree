@@ -1,10 +1,10 @@
 // Use dotenv to load environment variables from .env file into process.env for secure, flexible configuration
 require("dotenv").config();
 
-let mysql = require("mysql");
+const mysql = require("mysql");
 
 // a connection pool is a place where connections are stored.
-let db = mysql.createPool({
+const db = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PW,

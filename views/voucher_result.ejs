@@ -1,0 +1,43 @@
+<%- include("top") %>
+    <%- include("head") %>
+        <div class="container-box">
+            <div class="container-lg my-5">
+                <section class="my-4">
+                    <% vouchers.forEach((voucher)=>{ %>
+                        <div class="card">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <img src="<%= voucher.image_uri %>" class="card-img custom-img"
+                                        alt="Picture of <%= voucher.merchant_name %>">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h2 class="card-title">
+                                            <%= voucher.title %>
+                                        </h2>
+                                        <p class="voucher-code">
+                                            CODE: <%= voucher.voucher_code %>
+                                        </p>
+
+                                        <p class="card-text">
+                                            <% let lines=voucher.description.split('\n'); lines.forEach((line)=> { %>
+
+                                                <p>
+                                                    <%= line %>
+                                                </p>
+
+                                                <% }); %>
+                                        </p>
+                                        <!-- target="_blank" opens links in a new tab -->
+                                        <!--rel="noopener noreferrer" prevents new page from accessing data-->
+                                        <div class="shop-link"><a href="<%= voucher.shop_uri %>" target="_blank"
+                                                rel="noopener noreferrer" class="btn btn-primary">Go to shop</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <% }); %>
+                </section>
+            </div>
+        </div>
+        <%- include("foot") %>

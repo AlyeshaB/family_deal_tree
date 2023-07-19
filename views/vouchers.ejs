@@ -10,9 +10,9 @@
                         Filter
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="/Vouchers">All</a>
-                        <a class="dropdown-item" href="/likedVouchers">Most Liked</a>
-                        <a class="dropdown-item" href="/expiresSoon">Expires Soon</a>
+                        <a class="dropdown-item" href="/vouchers">All</a>
+                        <a class="dropdown-item" href="/vouchers/most-likes">Most Liked</a>
+                        <a class="dropdown-item" href="/vouchers/by-exp-date">Expires Soon</a>
                     </ul>
                 </div>
                 <div class="row mb-4">
@@ -23,42 +23,47 @@
                                     alt="<%= voucher.merchant_name %> logo">
                                 <div class="card-icon">
                                     <% if (loggedIn) { %>
-                                        <form id="likeVoucherForm" action="/likeVoucher" method="post">
+                                        <form id="likeVoucherForm" action="/saveVoucher" method="post">
                                             <input type="hidden" name="voucherId" value="<%= voucher.voucher_id %>">
                                             <button type="submit" class="btn btn-outline-secondary">
-                                                <i class="fas fa-heart" aria-hidden="true"></i>
+                                                <i class="fa fa-bookmark" aria-hidden="true"></i>
                                             </button>
                                         </form>
                                         <% } else { %>
                                             <a href="/register" class="btn btn-outline-secondary">
-                                                <i class="fas fa-heart"></i>
+                                                <i class="fa fa-bookmark"></i>
                                             </a>
                                             <% } %>
-
                                 </div>
                                 <div class="card-body">
                                     <h3 class="card-title">
                                         <%= voucher.title %>
                                     </h3>
                                     <p class="card-text">
-
+                                        <!-- Card text content -->
                                     </p>
-                                    <a href="/voucherCode" class="btn btn-primary">
-                                        <%=voucher.voucher_code %>
-                                    </a>
-                                    <% if (loggedIn) { %>
-                                        <form id="likeVoucherForm" action="/likeVoucher" method="post">
-                                            <input type="hidden" name="voucherId" value="<%= voucher.voucher_id %>">
-                                            <button type="submit" class="btn btn-outline-secondary">
-                                                <i class="fas fa-heart" aria-hidden="true"></i>
-                                            </button>
-                                        </form>
-                                        <% } else { %>
-                                            <a href="/register" class="btn btn-outline-secondary">
-                                                <i class="fas fa-heart"></i>
+                                    <div class="row">
+                                        <div class="col">
+                                            <a href="/vouchers/<%= voucher.voucher_id %>" class="btn btn-primary">
+                                                Get code
                                             </a>
-                                            <% } %>
-
+                                        </div>
+                                        <div class="col">
+                                            <% if (loggedIn) { %>
+                                                <form id="likeVoucherForm" action="/likeVoucher" method="post">
+                                                    <input type="hidden" name="voucherId"
+                                                        value="<%= voucher.voucher_id %>">
+                                                    <button type="submit" class="btn btn-outline-secondary">
+                                                        <i class="fas fa-heart" aria-hidden="true"></i>
+                                                    </button>
+                                                </form>
+                                                <% } else { %>
+                                                    <a href="/register" class="btn btn-outline-secondary">
+                                                        <i class="fas fa-heart"></i>
+                                                    </a>
+                                                    <% } %>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

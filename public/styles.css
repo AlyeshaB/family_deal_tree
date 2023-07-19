@@ -158,6 +158,10 @@ ul:hover,
   text-decoration: none;
 }
 
+.categories {
+  font-size: 1.7rem;
+}
+
 .header .navbar a:hover {
   color: #32cd32;
 }
@@ -334,9 +338,9 @@ body {
 }
 
 .custom-img {
-  height: 200px;
+  height: 20rem;
   width: 100%;
-  object-fit: cover; /* Maintain aspect ratio and fill container */
+  object-fit: contain; /* Maintain aspect ratio and fill container */
 }
 
 .btn.btn-primary,
@@ -355,6 +359,9 @@ body {
   text-decoration: none;
 }
 
+.add-voucher {
+  margin-top: 9rem;
+}
 .card-image {
   position: relative; /* This allows us to use absolute positioning for children */
 }
@@ -382,7 +389,13 @@ body {
   flex: 1 0 auto; /* This makes the .content element take up all available space */
 }
 
+.voucher-code {
+  margin: 2rem 0rem;
+  font-size: 2rem;
+}
+
 .swiper-slide.box {
+  margin-top: 2rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -390,6 +403,10 @@ body {
   height: 100%;
   position: relative;
   overflow: hidden; /* hides the portion of the image that extends beyond the box */
+}
+
+#dealDetails {
+  font-size: 1.6rem;
 }
 
 .image-section {
@@ -513,13 +530,6 @@ body {
   width: 6rem;
   height: 6rem;
   overflow: hidden;
-}
-
-.container-box .merchant-name {
-  text-align: center;
-  margin-top: 1.8rem;
-  padding-left: 1rem;
-  font-size: 1.6rem;
 }
 
 .add-deal {

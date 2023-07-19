@@ -1,0 +1,48 @@
+<%- include("top") %>
+    <%- include("head") %>
+
+        <section class="my-4">
+            <div class="add-voucher">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <h2>About Voucher</h2>
+                            <form id="voucherForm">
+                                <div class="mb-3">
+                                    <label for="voucherTitle" class="form-label">Title</label>
+                                    <input type="text" class="form-control" id="voucherTitle" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="voucherCode" class="form-label">Voucher Code</label>
+                                    <input type="text" class="form-control" id="voucherCode" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="voucherDescription" class="form-label">Description / Terms &amp;
+                                        Conditions</label>
+                                    <textarea class="form-control" id="voucherDescription" rows="4" required></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="voucherExpiryDate" class="form-label">Expiry Date</label>
+                                    <input type="date" class="form-control" id="voucherExpiryDate" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="voucherShopLink" class="form-label">Shop Link</label>
+                                    <input type="text" class="form-control" id="voucherShopLink" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="merchant" class="form-label">Merchant</label>
+                                    <input type="text" class="form-control" id="merchant" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <%- include("foot") %>
