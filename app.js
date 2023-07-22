@@ -1,4 +1,4 @@
-// Use dotenv to load environment variables from .env file into process.env for secure, flexible configuration
+// Use dotenv to load environment variables from .env file into process.env for secure configuration
 require("dotenv").config();
 
 const express = require("express");
@@ -47,151 +47,288 @@ app.use(express.json());
 // middleware to be able to POST <form> data. The "extended" set to true allows parsing of complex objects
 app.use(express.urlencoded({ extended: true }));
 
+// route for the homepage
 app.get("/", (req, res) => {
   const title = "Family Tree Deals";
-  let ep = `http://localhost:4000/`;
 
-  axios.get(ep).then((response) => {
-    let data = response.data;
-    console.log(data);
-    res.render("index", { tdata: title, deals: data });
-  });
+  // endpoint to be requested from the API
+  const ep = `http://localhost:4000/`;
+
+  // make a GET request to the defined endpoint
+  axios
+    .get(ep)
+    .then((response) => {
+      // extract data from the API response
+      let data = response.data;
+
+      // log the data to the console for debugging
+      console.log(data);
+
+      // render the index page with provided title and data
+      res.render("index", { tdata: title, deals: data });
+    })
+    // error handling for the API request
+    .catch((err) => {
+      console.error(err);
+      res
+        .status(500)
+        .json({ error: "Error occurred while fetching data.", details: err });
+    });
 });
 
+// route for the deals page
 app.get("/deals", (req, res) => {
   const title = "Bargains";
-  let ep = `http://localhost:4000/deals`;
-  axios.get(ep).then((response) => {
-    let data = response.data;
-    res.render("deals", { tdata: title, deals: data });
-  });
+  const ep = `http://localhost:4000/deals`;
+  axios
+    .get(ep)
+    .then((response) => {
+      let data = response.data;
+      res.render("deals", { tdata: title, deals: data });
+    })
+    .catch((err) => {
+      console.error(err);
+      res
+        .status(500)
+        .json({ error: "Error occurred while fetching data.", details: err });
+    });
 });
 
+// route to get and display the deals in order of most likes
 app.get("/deals/liked", (req, res) => {
   const title = "Bargains";
-  let ep = `http://localhost:4000/deals/liked`;
-  axios.get(ep).then((response) => {
-    let data = response.data;
-    res.render("deals", { tdata: title, deals: data });
-  });
+  const ep = `http://localhost:4000/deals/liked`;
+  axios
+    .get(ep)
+    .then((response) => {
+      let data = response.data;
+      res.render("deals", { tdata: title, deals: data });
+    })
+    .catch((err) => {
+      console.error(err);
+      res
+        .status(500)
+        .json({ error: "Error occurred while fetching data.", details: err });
+    });
 });
 
+// route to get and display deals in order of when they were posted - most recent first
 app.get("/deals/recent", (req, res) => {
   const title = "Bargains";
-  let ep = `http://localhost:4000/deals/recent`;
-  axios.get(ep).then((response) => {
-    let data = response.data;
-    res.render("deals", { tdata: title, deals: data });
-  });
+  const ep = `http://localhost:4000/deals/recent`;
+  axios
+    .get(ep)
+    .then((response) => {
+      let data = response.data;
+      res.render("deals", { tdata: title, deals: data });
+    })
+    .catch((err) => {
+      console.error(err);
+      res
+        .status(500)
+        .json({ error: "Error occurred while fetching data.", details: err });
+    });
 });
 
+// route for a specific deal
 app.get("/deals/:deal_id", (req, res) => {
   const dealId = req.params.deal_id;
-  let ep = `http://localhost:4000/deals/${dealId}`;
+  const ep = `http://localhost:4000/deals/${dealId}`;
 
-  axios.get(ep).then((response) => {
-    let data = response.data;
-    const title = data[0].title;
-    // Render the deal detail page with the specific deal's details
-    res.render("deal_result", { tdata: title, deals: data });
-    console.log(data);
-  });
+  axios
+    .get(ep)
+    .then((response) => {
+      let data = response.data;
+      const title = data[0].title;
+
+      // Render the deal detail page with the specific deal's details
+      res.render("deal_result", { tdata: title, deals: data });
+      console.log(data);
+    })
+    .catch((err) => {
+      console.error(err);
+      res
+        .status(500)
+        .json({ error: "Error occurred while fetching data.", details: err });
+    });
 });
 
+// route to get vouchers page
 app.get("/vouchers", (req, res) => {
   const title = "Vouchers";
-  let ep = `http://localhost:4000/vouchers`;
-  axios.get(ep).then((response) => {
-    let data = response.data;
-    res.render("vouchers", { tdata: title, vouchers: data });
-  });
+  const ep = `http://localhost:4000/vouchers`;
+  axios
+    .get(ep)
+    .then((response) => {
+      let data = response.data;
+      res.render("vouchers", { tdata: title, vouchers: data });
+    })
+    .catch((err) => {
+      console.error(err);
+      res
+        .status(500)
+        .json({ error: "Error occurred while fetching data.", details: err });
+    });
 });
 
+// route to get vouchers by expirary date showing ones the expire soon first
 app.get("/vouchers/by-exp-date", (req, res) => {
   const title = "Vouchers";
-  let ep = `http://localhost:4000/vouchers/by-date`;
+  const ep = `http://localhost:4000/vouchers/by-date`;
 
-  axios.get(ep).then((response) => {
-    let data = response.data;
-    res.render("vouchers", { tdata: title, vouchers: data });
-  });
+  axios
+    .get(ep)
+    .then((response) => {
+      let data = response.data;
+      res.render("vouchers", { tdata: title, vouchers: data });
+    })
+    .catch((err) => {
+      console.error(err);
+      res
+        .status(500)
+        .json({ error: "Error occurred while fetching data.", details: err });
+    });
 });
 
+// route to get vouchers in order of likes - starting with most liked
 app.get("/vouchers/most-likes", (req, res) => {
   const title = "Vouchers";
   let ep = `http://localhost:4000/vouchers/likes`;
-  axios.get(ep).then((response) => {
-    let data = response.data;
-    res.render("vouchers", { tdata: title, vouchers: data });
-  });
+  axios
+    .get(ep)
+    .then((response) => {
+      let data = response.data;
+      res.render("vouchers", { tdata: title, vouchers: data });
+    })
+    .catch((err) => {
+      console.error(err);
+      res
+        .status(500)
+        .json({ error: "Error occurred while fetching data.", details: err });
+    });
 });
 
+// route to get a specific voucher
 app.get("/vouchers/:voucher_id", (req, res) => {
   const voucherId = req.params.voucher_id;
-  let ep = `http://localhost:4000/vouchers/${voucherId}`;
+  const ep = `http://localhost:4000/vouchers/${voucherId}`;
 
-  axios.get(ep).then((response) => {
-    let data = response.data;
-    const title = data[0].title;
-    // Render the voucher detail page with the specific voucher's details
-    res.render("voucher_result", { tdata: title, vouchers: data });
-    console.log(data);
-  });
+  axios
+    .get(ep)
+    .then((response) => {
+      let data = response.data;
+      const title = data[0].title;
+      // Render the voucher detail page with the specific voucher's details
+      res.render("voucher_result", { tdata: title, vouchers: data });
+    })
+    .catch((err) => {
+      console.error(err);
+      res
+        .status(500)
+        .json({ error: "Error occurred while fetching data.", details: err });
+    });
 });
 
+// route for fetching and rendering a list of merchants
 app.get("/merchants", (req, res) => {
   const title = "Merchants";
 
-  let ep = `http://localhost:4000/merchants`;
+  const ep = `http://localhost:4000/merchants`;
 
-  axios.get(ep).then((response) => {
-    let data = response.data;
-    res.render("merchants", { tdata: title, merchants: data });
-  });
+  axios
+    .get(ep)
+    .then((response) => {
+      let data = response.data;
+      res.render("merchants", { tdata: title, merchants: data });
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({
+        error: "Error occurred while fetching merchants.",
+        details: err,
+      });
+    });
 });
 
+// route for fetching either all deals or all vouchers for a specific merchant
 app.get("/merchants/:merchantId/deals", (req, res) => {
   const title = "Merchant Results";
   const merchantId = req.params.merchantId;
 
-  let ep = `http://localhost:4000/merchants/${merchantId}/deals`;
+  const ep = `http://localhost:4000/merchants/${merchantId}/deals`;
 
-  axios.get(ep).then((response) => {
-    const { dataType, data } = response.data; // Get dataType and data from response
-    if (dataType === "deals") {
-      res.render("deals", { tdata: title, deals: data });
-    } else if (dataType === "vouchers") {
-      res.render("vouchers", { tdata: title, vouchers: data });
-    }
-  });
+  axios
+    .get(ep)
+    .then((response) => {
+      // depending on the dataType received, render the appropriate page with the received data
+      const { dataType, data } = response.data;
+      if (dataType === "deals") {
+        res.render("deals", { tdata: title, deals: data });
+      } else if (dataType === "vouchers") {
+        res.render("vouchers", { tdata: title, vouchers: data });
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res
+        .status(500)
+        .json({ error: "Error occurred while fetching data.", details: err });
+    });
 });
 
 // fetch all deals from a specific category based on its slug
 app.get("/categories/:categorySlug", (req, res) => {
   const title = "Bargains";
   const categorySlug = req.params.categorySlug;
-  let ep = `http://localhost:4000/categories/${categorySlug}`;
+  const ep = `http://localhost:4000/categories/${categorySlug}`;
 
-  axios.get(ep).then((response) => {
-    let data = response.data;
-    res.render("deals", { tdata: title, deals: data });
-    console.log(data);
-  });
+  axios
+    .get(ep)
+    .then((response) => {
+      let data = response.data;
+      res.render("deals", { tdata: title, deals: data });
+    })
+    .catch((err) => {
+      console.error(err);
+      res
+        .status(500)
+        .json({ error: "Error occurred while fetching data.", details: err });
+    });
 });
 
+// route to fetch data related to what the user types in the search bar
 app.get("/search", (req, res) => {
   const title = "Search Results";
 
+  // extract the search query parameter from the request URL
   const searchQuery = req.query.search;
 
-  let ep = `http://localhost:4000/search?search=${searchQuery}`;
+  const ep = `http://localhost:4000/search?search=${searchQuery}`;
 
-  axios.get(ep).then((response) => {
-    let data = response.data;
-    res.render("deals", { tdata: title, deals: data });
-  });
+  axios
+    .get(ep)
+    .then((response) => {
+      let dataType = response.data.dataType;
+      let data = response.data.data;
+
+      // check the dataType to render the appropriate view
+      if (dataType === "deals") {
+        res.render("deals", { tdata: title, deals: data });
+      } else if (dataType === "vouchers") {
+        res.render("vouchers", { tdata: title, vouchers: data });
+      } else {
+        res.status(404).send("No data found");
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res
+        .status(500)
+        .json({ error: "Error occurred while fetching data.", details: err });
+    });
 });
 
+// route to fetch and display the registration page
 app.get("/register", (req, res) => {
   const title = "Sign Up";
   res.render("register", { tdata: title });
@@ -200,19 +337,22 @@ app.get("/register", (req, res) => {
 // post route to send user sign up data to database
 app.post("/register", (req, res) => {
   const title = "Sign up";
+
+  // extract user data from the request body
   const { firstName, secondName, username, email, password } = req.body;
 
-  // Basic validation
+  // basic validation
   if (!firstName || !secondName || !username || !email || !password) {
     return res.status(400).json({ error: "All fields are required" });
   }
 
-  // Validate email format using a regular expression
+  // validate email format using a regular expression
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {
     return res.status(400).json({ error: "Invalid email format" });
   }
 
+  // construct user object
   const user = {
     first_name: firstName,
     second_name: secondName,
@@ -221,25 +361,33 @@ app.post("/register", (req, res) => {
     password,
   };
 
-  let ep = `http://localhost:4000/register`;
+  const ep = `http://localhost:4000/register`;
 
-  axios.post(ep, user).then((response) => {
-    if (response.data.success) {
-      // Store the user's session information
-      req.session.authen = true;
-      req.session.user = user;
-      res.render("register", { sentback: user, tdata: title });
-    } else {
-      console.error(response.data.error);
-      res.render("register", { tdata: title });
-    }
-  });
+  // send the user data to the backend server
+  axios
+    .post(ep, user)
+    .then((response) => {
+      if (response.data.success) {
+        // Store the user's session information
+        req.session.authen = true;
+        req.session.user = user;
+        res.render("register", { sentback: user, tdata: title });
+      } else {
+        console.error(response.data.error);
+        res.render("register", { tdata: title });
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ error: "Error processing registration" });
+    });
 });
 
+// route that allows an existing registered user to log in
 app.post("/", (req, res) => {
   const { username, password } = req.body;
 
-  let ep = `http://localhost:4000/login`;
+  const ep = `http://localhost:4000/login`;
 
   axios.post(ep, { username, password }).then((response) => {
     if (response.data.authen) {
@@ -252,13 +400,13 @@ app.post("/", (req, res) => {
 });
 
 app.get("/dashboard", (req, res) => {
-  let title = "Profile";
-  let sessionObj = req.session;
+  const title = "Profile";
+  const sessionObj = req.session;
 
   if (sessionObj.authen) {
-    let userId = sessionObj.authen;
+    const userId = sessionObj.authen;
 
-    let ep = `http://localhost:4000/user/${userId}`;
+    const ep = `http://localhost:4000/user/${userId}`;
 
     axios
       .get(ep)
@@ -277,101 +425,112 @@ app.get("/dashboard", (req, res) => {
   }
 });
 
+// route to allow a logged in user to save a deal
 app.post("/saveDeal", (req, res) => {
-  let sessionObj = req.session;
+  const sessionObj = req.session;
   if (sessionObj.authen) {
-    let userId = sessionObj.authen;
+    const userId = sessionObj.authen;
 
     // Retrieve the deal ID from the request body
     const dealId = req.body.dealId;
 
-    let ep = `http://localhost:4000/saveDeal?userId=${userId}&dealId=${dealId}`;
+    const ep = `http://localhost:4000/saveDeal?userId=${userId}&dealId=${dealId}`;
 
-    axios.post(ep).then((response) => {
-      if (response.data.error) {
-        console.error(response.data.error);
-        res.status(500).json({ error: "Failed to save the deal" });
-      } else {
+    axios
+      .post(ep)
+      .then(() => {
         console.log(`Deal saved successfully for user ID: ${userId}`);
         res.redirect("/deals");
-      }
-    });
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send("An error occurred. Please try again later.");
+      });
   }
 });
 
+// route to allow a logged in user to save a voucher
 app.post("/saveVoucher", (req, res) => {
-  let sessionObj = req.session;
+  const sessionObj = req.session;
   if (sessionObj.authen) {
     let userId = sessionObj.authen;
 
     // Retrieve the voucher ID from the request body
     const voucherId = req.body.voucherId;
 
-    let ep = `http://localhost:4000/saveVoucher?userId=${userId}&voucherId=${voucherId}`;
+    const ep = `http://localhost:4000/saveVoucher?userId=${userId}&voucherId=${voucherId}`;
 
-    axios.post(ep).then((response) => {
-      if (response.data.error) {
-        console.error(response.data.error);
-        res.status(500).json({ error: "Failed to save the voucher" });
-      } else {
+    axios
+      .post(ep)
+      .then(() => {
         console.log(`Voucher saved successfully for user ID: ${userId}`);
         res.redirect("/vouchers");
-      }
-    });
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send("An error occurred. Please try again later.");
+      });
   }
 });
 
+// route to allow a user to like a deal
 app.post("/likeDeal", (req, res) => {
-  let sessionObj = req.session;
+  const sessionObj = req.session;
 
   if (sessionObj.authen) {
-    let userId = sessionObj.authen;
+    const userId = sessionObj.authen;
 
     // Retrieve the deal ID from the request body
     const dealId = req.body.dealId;
 
-    let ep = `http://localhost:4000/likeDeal?userId=${userId}&dealId=${dealId}`;
+    const ep = `http://localhost:4000/likeDeal?userId=${userId}&dealId=${dealId}`;
 
-    axios.post(ep).then((response) => {
-      if (response.data.error) {
-        console.error(response.data.error);
-        res.status(500).json({ error: "Failed to like the deal" });
-      } else {
+    axios
+      .post(ep)
+      .then(() => {
         console.log(`Deal liked successfully for user ID: ${userId}`);
         res.redirect("/deals");
-      }
-    });
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send("An error occurred. Please try again later.");
+      });
   }
 });
 
+// route to allow a user to like a voucher
 app.post("/likeVoucher", (req, res) => {
   const sessionObj = req.session;
 
+  // check if the user is authenticated
   if (sessionObj.authen) {
     const userId = sessionObj.authen;
     const voucherId = req.body.voucherId;
 
     const ep = `http://localhost:4000/likeVoucher?userId=${userId}&voucherId=${voucherId}`;
 
-    axios.post(ep).then((response) => {
-      if (response.data.error) {
-        console.error(response.data.error);
-        res.status(500).send("An error occurred. Please try again later.");
-      } else {
+    axios
+      .post(ep)
+      .then(() => {
         console.log(`Voucher liked successfully for user ID: ${userId}`);
         res.redirect("/vouchers");
-      }
-    });
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send("An error occurred. Please try again later.");
+      });
   }
 });
 
+// route to fetch and render users saved deals
 app.get("/savedDeals", (req, res) => {
-  let title = "Saved Deals";
-  let sessionObj = req.session;
+  const title = "Saved Deals";
+  const sessionObj = req.session;
 
+  // check if the user is authenticated
   if (sessionObj.authen) {
-    let userId = sessionObj.authen;
-    let ep = `http://localhost:4000/savedDeals?userId=${userId}`;
+    const userId = sessionObj.authen;
+    const ep = `http://localhost:4000/savedDeals?userId=${userId}`;
 
     // Make a request to the backend to get saved deals
     axios
@@ -380,17 +539,25 @@ app.get("/savedDeals", (req, res) => {
         // Render the 'deals' view with the retrieved deals data
         res.render("deals", { tdata: title, deals: response.data });
       })
-      .catch((error) => {
-        console.error(error.message);
-        res.status(500).send("Error retrieving saved deals");
+      .catch((err) => {
+        console.error(err);
+
+        // if user has no saved deals
+        if (err.response && err.response.status === 404) {
+          res.status(404).send("No saved deals found");
+        } else {
+          res.status(500).send("Error retrieving saved vouchers");
+        }
       });
   }
 });
 
+// route to fetch and render users saved vouchers
 app.get("/savedVouchers", (req, res) => {
   const title = "Saved Vouchers";
   const sessionObj = req.session;
 
+  // check if the user is authenticated
   if (sessionObj.authen) {
     const userId = sessionObj.authen;
 
@@ -408,22 +575,27 @@ app.get("/savedVouchers", (req, res) => {
       })
       .catch((err) => {
         console.error(err);
-        res.status(500).send("Error retrieving saved vouchers");
+
+        // if user has no saved vouchers
+        if (err.response && err.response.status === 404) {
+          res.status(404).send("No saved vouchers found");
+        } else {
+          res.status(500).send("Error retrieving saved vouchers");
+        }
       });
   }
 });
 
 app.get("/addDeal", (req, res) => {
-  let title = "Submit Deal";
-  let sessionObj = req.session;
+  const title = "Submit Deal";
+  const sessionObj = req.session;
   if (sessionObj.authen) {
-    let userId = sessionObj.authen;
     res.render("add_deal", { tdata: title });
   }
 });
 
 app.post("/deals/add", (req, res) => {
-  let sessionObj = req.session;
+  const sessionObj = req.session;
   if (!sessionObj.authen) {
     res.redirect("/");
   }
@@ -472,18 +644,22 @@ app.post("/deals/add", (req, res) => {
 });
 
 app.get("/addVoucher", (req, res) => {
-  let title = "Submit Voucher";
-  let sessionObj = req.session;
+  const title = "Submit Voucher";
+  const sessionObj = req.session;
   if (sessionObj.authen) {
-    let userId = sessionObj.authen;
     res.render("add_voucher", { tdata: title });
   }
 });
 
+// route to log a user out
 app.post("/logout", (req, res) => {
   req.session.destroy((err) => {
     if (err) {
-      console.log(err);
+      console.error(err);
+      // Send error status and message to client
+      return res
+        .status(500)
+        .json({ error: "An error occurred while trying to logout." });
     }
     setTimeout(() => {
       res.redirect("/");

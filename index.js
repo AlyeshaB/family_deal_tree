@@ -8,11 +8,11 @@ const PORT = process.env.PORT || 4000;
 // Allows the server to parse JSON data sent in the body of incoming requests
 app.use(express.json());
 
-// middleware to be able to POST <form> data. The "extended" set to true allows parsing of complex objects
+// middleware to be able to POST form data. The "extended" set to true allows parsing of complex objects
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
-  let sql = `SELECT *, COUNT(deal_up_vote.deal_id) AS vote_count
+  const sql = `SELECT *, COUNT(deal_up_vote.deal_id) AS vote_count
     FROM deal
     LEFT JOIN deal_up_vote ON deal.deal_id = deal_up_vote.deal_id
     GROUP BY deal.deal_id
@@ -20,24 +20,26 @@ app.get("/", (req, res) => {
 
   connection.query(sql, (err, data) => {
     if (err) {
-      throw err;
+      console.error(err);
+      return res.status(500).json({ error: "Database error" });
     }
     res.json(data);
   });
 });
 
 app.get("/deals", (req, res) => {
-  let sql = `SELECT * FROM deal`;
+  const sql = `SELECT * FROM deal`;
   connection.query(sql, (err, data) => {
     if (err) {
-      throw err;
+      console.error(err);
+      return res.status(500).json({ error: "Database error" });
     }
     res.json(data);
   });
 });
 
 app.get("/deals/liked", (req, res) => {
-  let sql = `SELECT *, COUNT(deal_up_vote.deal_id) AS vote_count
+  const sql = `SELECT *, COUNT(deal_up_vote.deal_id) AS vote_count
   FROM deal
   LEFT JOIN deal_up_vote ON deal.deal_id = deal_up_vote.deal_id
   GROUP BY deal.deal_id
@@ -45,18 +47,20 @@ app.get("/deals/liked", (req, res) => {
 
   connection.query(sql, (err, data) => {
     if (err) {
-      throw err;
+      console.error(err);
+      return res.status(500).json({ error: "Database error" });
     }
     res.json(data);
   });
 });
 
 app.get("/deals/recent", (req, res) => {
-  let sql = `SELECT * FROM deal ORDER BY post_date DESC`;
+  const sql = `SELECT * FROM deal ORDER BY post_date DESC`;
 
   connection.query(sql, (err, data) => {
     if (err) {
-      throw err;
+      console.error(err);
+      return res.status(500).json({ error: "Database error" });
     }
     res.json(data);
   });
@@ -71,32 +75,34 @@ app.get("/deals/:deal_id", (req, res) => {
 
   connection.query(sql, [dealId], (err, data) => {
     if (err) {
-      throw err;
+      console.error(err);
+      return res.status(500).json({ error: "Database error" });
     }
     // Check if results were returned
     if (data.length === 0) {
-      return res.status(404).send("No deal found with this ID");
+      return res.status(404).json({ error: "No deal found with this ID" });
     }
     res.json(data);
   });
 });
 
 app.get("/vouchers", (req, res) => {
-  let sql = `SELECT *, merchant.image_uri 
+  const sql = `SELECT *, merchant.image_uri 
     FROM voucher 
     JOIN merchant 
     ON voucher.merchant_id = merchant.merchant_id`;
 
   connection.query(sql, (err, data) => {
     if (err) {
-      throw err;
+      res.status(500).json({ error: "Database query failed", details: err });
+      return;
     }
     res.json(data);
   });
 });
 
 app.get("/vouchers/by-date", (req, res) => {
-  let sql = `
+  const sql = `
   SELECT *, merchant.image_uri 
   FROM voucher
   LEFT JOIN merchant ON voucher.merchant_id = merchant.merchant_id
@@ -104,14 +110,15 @@ app.get("/vouchers/by-date", (req, res) => {
 
   connection.query(sql, (err, data) => {
     if (err) {
-      throw err;
+      res.status(500).json({ error: "Database query failed", details: err });
+      return;
     }
     res.json(data);
   });
 });
 
 app.get("/vouchers/likes", (req, res) => {
-  let sql = `
+  const sql = `
   SELECT *, merchant.image_uri, COUNT(voucher_up_vote.voucher_id) AS vote_count
   FROM voucher
   LEFT JOIN merchant ON voucher.merchant_id = merchant.merchant_id
@@ -121,7 +128,8 @@ app.get("/vouchers/likes", (req, res) => {
 
   connection.query(sql, (err, data) => {
     if (err) {
-      throw err;
+      res.status(500).json({ error: "Database query failed", details: err });
+      return;
     }
     res.json(data);
   });
@@ -139,22 +147,24 @@ app.get("/vouchers/:voucher_id", (req, res) => {
 
   connection.query(sql, [voucherId], (err, data) => {
     if (err) {
-      throw err;
+      res.status(500).json({ error: "Database query failed", details: err });
+      return;
     }
     // Check if results were returned
     if (data.length === 0) {
-      return res.status(404).send("No voucher found with this ID");
+      return res.status(404).json({ error: "No voucher found with this ID" });
     }
     res.json(data);
   });
 });
 
 app.get("/merchants", (req, res) => {
-  let sql = `SELECT * FROM merchant ORDER BY merchant_name ASC`;
+  const sql = `SELECT * FROM merchant ORDER BY merchant_name ASC`;
 
   connection.query(sql, (err, results) => {
     if (err) {
-      throw err;
+      res.status(500).json({ error: "Database query failed", details: err });
+      return;
     } else {
       res.json(results);
     }
@@ -164,7 +174,7 @@ app.get("/merchants", (req, res) => {
 app.get("/merchants/:merchantId/deals", (req, res) => {
   const merchantId = req.params.merchantId;
 
-  let sql = `
+  const sql = `
     SELECT * 
     FROM deal 
     JOIN merchant ON deal.merchant_id = merchant.merchant_id 
@@ -180,7 +190,8 @@ app.get("/merchants/:merchantId/deals", (req, res) => {
     { sql, values: [merchantId, merchantId] },
     (err, results) => {
       if (err) {
-        throw err;
+        res.status(500).json({ error: "Database query failed", details: err });
+        return;
       } else {
         const dealResults = results[0];
         const voucherResults = results[1];
@@ -206,7 +217,8 @@ app.get("/categories/:categorySlug", (req, res) => {
 
   connection.query(sql, [categorySlug], (err, data) => {
     if (err) {
-      throw err;
+      res.status(500).json({ error: "Database query failed", details: err });
+      return;
     }
     res.json(data);
   });
@@ -216,19 +228,33 @@ app.get("/search", (req, res) => {
   const searchQuery = req.query.search;
 
   const sql = `SELECT * FROM deal 
-  WHERE title LIKE ? OR description LIKE ?`;
+  WHERE deal.title LIKE ? OR deal.description LIKE ?;
+  
+  SELECT *, merchant.image_uri FROM voucher 
+  LEFT JOIN merchant ON voucher.merchant_id = merchant.merchant_id
+  WHERE voucher.title LIKE ? OR voucher.description LIKE ?;`;
 
   connection.query(
     sql,
-    [`%${searchQuery}%`, `%${searchQuery}%`],
+    [
+      `%${searchQuery}%`,
+      `%${searchQuery}%`,
+      `%${searchQuery}%`,
+      `%${searchQuery}%`,
+    ],
     (err, data) => {
       if (err) {
-        throw err;
-      }
-      if (data.length === 0) {
-        res.send("No search results found...");
+        res.status(500).json({ error: "Database query failed", details: err });
+        return;
       } else {
-        res.json(data);
+        const dealResults = data[0];
+        const voucherResults = data[1];
+
+        if (dealResults.length > 0) {
+          res.json({ dataType: "deals", data: dealResults });
+        } else {
+          res.json({ dataType: "vouchers", data: voucherResults });
+        }
       }
     }
   );
@@ -276,7 +302,7 @@ app.post("/login", (req, res) => {
 app.get("/user/:userId", (req, res) => {
   const { userId } = req.params;
 
-  let sql = "SELECT * FROM user WHERE user_id = ?";
+  const sql = "SELECT * FROM user WHERE user_id = ?";
   connection.query(sql, [userId], (err, rows) => {
     if (err) throw err;
 
