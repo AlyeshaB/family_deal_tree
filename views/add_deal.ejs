@@ -8,36 +8,40 @@
                             <div class="voucher">
                                 <h2>About This Deal</h2>
                             </div>
-                            <form id="dealForm">
+                            <form id="dealForm" method="POST" action="/deals/add">
                                 <div class="mb-3">
                                     <label for="dealTitle" class="form-label">Title</label>
-                                    <input type="text" class="form-control" id="dealTitle" required>
+                                    <input type="text" class="form-control" id="dealTitle" name="dealTitle" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="dealDescription" class="form-label">Description</label>
-                                    <textarea class="form-control" id="dealDescription" rows="4" required></textarea>
+                                    <textarea class="form-control" id="dealDescription" rows="4" name="dealDescription"
+                                        required></textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label for="dealLink" class="form-label">Link to Deal</label>
-                                    <input type="text" class="form-control" id="dealLink" required>
+                                    <input type="text" class="form-control" id="dealLink" name="dealLink" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="dealImageLink" class="form-label">Image Link</label>
-                                    <input type="text" class="form-control" id="dealImageLink" required>
+                                    <input type="text" class="form-control" id="dealImageLink" name="dealImageLink"
+                                        required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="dealOriginalPrice" class="form-label">Original Price</label>
-                                    <input type="number" class="form-control" id="dealOriginalPrice" required>
+                                    <input type="number" class="form-control" id="dealOriginalPrice"
+                                        name="dealOriginalPrice" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="dealPrice" class="form-label">Price</label>
-                                    <input type="number" class="form-control" id="dealPrice" required>
+                                    <input type="number" class="form-control" id="dealPrice" name="dealPrice" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="dealMerchant" class="form-label">Merchant</label>
-                                    <input type="text" class="form-control" id="dealMerchant" required>
+                                    <input type="text" class="form-control" id="dealMerchant" name="dealMerchant"
+                                        required>
                                 </div>
-                                <div class="mb-3">
+                                <!-- <div class="mb-3">
                                     <label for="dealCategory" class="form-label">Category</label>
                                     <select class="form-select" id="dealCategory" name="dealCategory" required>
                                         <option value="" disabled selected>Select a category</option>
@@ -48,7 +52,7 @@
                                         <option value="3">sport & outdoors</option>
                                         <option value="3">garden & DIY</option>
                                     </select>
-                                </div>
+                                </div> -->
                                 <div class="mb-3">
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                 </div>

@@ -594,53 +594,99 @@ app.get("/addDeal", (req, res) => {
   }
 });
 
+// app.post("/deals/add", (req, res) => {
+//   const sessionObj = req.session;
+//   if (!sessionObj.authen) {
+//     res.redirect("/");
+//   }
+
+//   const {
+//     title,
+//     description,
+//     deal_uri,
+//     deal_image_uri,
+//     original_price,
+//     price,
+//     merchant_id,
+//     post_date,
+//   } = req.body;
+
+//   const insertData = {
+//     title,
+//     description,
+//     deal_uri,
+//     deal_image_uri,
+//     original_price,
+//     price,
+//     user_id: sessionObj.authen,
+//     merchant_id,
+//     post_date,
+//   };
+
+//   const config = {
+//     headers: {
+//       "Content-Type": "application/x-www-form-urlencoded",
+//     },
+//   };
+
+//   const endpoint = "http://localhost:4000/deals/add";
+//   axios
+//     .post(endpoint, insertData, config)
+//     .then((response) => {
+//       const insertedid = response.data.respObj.deal_id;
+//       const resmessage = response.data.respObj.message;
+
+//       res.send(`${resmessage}. INSERTED DB id ${insertedid}`);
+//     })
+//     .catch((err) => {
+//       console.log(err.message);
+//     });
+// });
+
+// route to allow a logged in user to add a deal
 app.post("/deals/add", (req, res) => {
   const sessionObj = req.session;
-  if (!sessionObj.authen) {
-    res.redirect("/");
+  if (sessionObj.authen) {
+    let userId = sessionObj.authen;
+
+    // Extract deal details from request body
+    const {
+      dealTitle,
+      dealDescription,
+      dealLink,
+      dealImageLink,
+      dealOriginalPrice,
+      dealPrice,
+      dealMerchant,
+      // dealCategory,
+    } = req.body;
+
+    // Endpoint where we'll post our data to the backend
+    const ep = `http://localhost:4000/deals/add`;
+
+    // Create an object that holds our data
+    const deal = {
+      dealTitle: dealTitle,
+      dealDescription: dealDescription,
+      dealLink: dealLink,
+      dealImageLink: dealImageLink,
+      dealOriginalPrice: dealOriginalPrice,
+      dealPrice: dealPrice,
+      dealMerchant: dealMerchant,
+      // dealCategory: dealCategory,
+      user_id: userId,
+    };
+    axios
+      .post(ep, deal)
+      .then(() => {
+        console.log(`Deal added successfully for user ID: ${userId}`);
+        res.redirect("/deals");
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send("An error occurred. Please try again later.");
+      });
   }
-
-  const {
-    title,
-    description,
-    deal_uri,
-    deal_image_uri,
-    original_price,
-    price,
-    merchant_id,
-    post_date,
-  } = req.body;
-
-  const insertData = {
-    title,
-    description,
-    deal_uri,
-    deal_image_uri,
-    original_price,
-    price,
-    user_id: sessionObj.authen,
-    merchant_id,
-    post_date,
-  };
-
-  const config = {
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-  };
-
-  const endpoint = "http://localhost:4000/deals/add";
-  axios
-    .post(endpoint, insertData, config)
-    .then((response) => {
-      const insertedid = response.data.respObj.deal_id;
-      const resmessage = response.data.respObj.message;
-
-      res.send(`${resmessage}. INSERTED DB id ${insertedid}`);
-    })
-    .catch((err) => {
-      console.log(err.message);
-    });
 });
 
 app.get("/addVoucher", (req, res) => {

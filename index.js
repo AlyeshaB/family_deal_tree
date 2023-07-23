@@ -11,6 +11,7 @@ app.use(express.json());
 // middleware to be able to POST form data. The "extended" set to true allows parsing of complex objects
 app.use(express.urlencoded({ extended: true }));
 
+// fetches all the deals and orders them by the count of upvotes in descending order
 app.get("/", (req, res) => {
   const sql = `SELECT *, COUNT(deal_up_vote.deal_id) AS vote_count
     FROM deal
@@ -23,11 +24,13 @@ app.get("/", (req, res) => {
       console.error(err);
       return res.status(500).json({ error: "Database error" });
     }
+    // send the fetched deals as a response
     res.json(data);
   });
 });
 
 app.get("/deals", (req, res) => {
+  // query to get all data deal
   const sql = `SELECT * FROM deal`;
   connection.query(sql, (err, data) => {
     if (err) {
@@ -39,6 +42,7 @@ app.get("/deals", (req, res) => {
 });
 
 app.get("/deals/liked", (req, res) => {
+  // query to get all the deals ordered by the number of likes in descending order
   const sql = `SELECT *, COUNT(deal_up_vote.deal_id) AS vote_count
   FROM deal
   LEFT JOIN deal_up_vote ON deal.deal_id = deal_up_vote.deal_id
@@ -55,6 +59,7 @@ app.get("/deals/liked", (req, res) => {
 });
 
 app.get("/deals/recent", (req, res) => {
+  // query to get all deals ordered by post date in descending order
   const sql = `SELECT * FROM deal ORDER BY post_date DESC`;
 
   connection.query(sql, (err, data) => {
@@ -101,7 +106,9 @@ app.get("/vouchers", (req, res) => {
   });
 });
 
+// vouchers are ordered by their expiration date in ascending order
 app.get("/vouchers/by-date", (req, res) => {
+  // left join is used to ensure that all vouchers are returned even if a merchant does not exist for a particular voucher
   const sql = `
   SELECT *, merchant.image_uri 
   FROM voucher
@@ -118,6 +125,7 @@ app.get("/vouchers/by-date", (req, res) => {
 });
 
 app.get("/vouchers/likes", (req, res) => {
+  // most-liked vouchers are returned first
   const sql = `
   SELECT *, merchant.image_uri, COUNT(voucher_up_vote.voucher_id) AS vote_count
   FROM voucher
@@ -138,7 +146,7 @@ app.get("/vouchers/likes", (req, res) => {
 app.get("/vouchers/:voucher_id", (req, res) => {
   const voucherId = req.params.voucher_id;
 
-  // Use voucherId to fetch the specific voucher's details from the database
+  // Use voucher_id URL path parameter to fetch the specific voucher's details from the database
   const sql = `SELECT *, merchant.image_uri 
   FROM voucher 
   JOIN merchant 
@@ -159,6 +167,7 @@ app.get("/vouchers/:voucher_id", (req, res) => {
 });
 
 app.get("/merchants", (req, res) => {
+  //  query to fetch all merchants ordered by their name in ascending order
   const sql = `SELECT * FROM merchant ORDER BY merchant_name ASC`;
 
   connection.query(sql, (err, results) => {
@@ -171,7 +180,9 @@ app.get("/merchants", (req, res) => {
   });
 });
 
+// route handler expects a merchant ID as a path parameter and fetches all deals and vouchers associated with the given merchant ID
 app.get("/merchants/:merchantId/deals", (req, res) => {
+  // extract the merchant ID from the request parameters
   const merchantId = req.params.merchantId;
 
   const sql = `
@@ -196,6 +207,7 @@ app.get("/merchants/:merchantId/deals", (req, res) => {
         const dealResults = results[0];
         const voucherResults = results[1];
 
+        // if there are any deals send them in the response, otherwise send the vouchers
         if (dealResults.length > 0) {
           res.json({ dataType: "deals", data: dealResults });
         } else {
@@ -206,8 +218,9 @@ app.get("/merchants/:merchantId/deals", (req, res) => {
   );
 });
 
-// fetch all deals from a specific category based on its slug
+// endpoint expects a category slug as a path parameter and returns all the deals belonging to that category
 app.get("/categories/:categorySlug", (req, res) => {
+  // extract the category slug from the request parameters
   const categorySlug = req.params.categorySlug;
   const sql = `SELECT deal.*, category.category_name 
   FROM deal 
@@ -224,9 +237,11 @@ app.get("/categories/:categorySlug", (req, res) => {
   });
 });
 
+// endpoint performs a search in the deal and voucher tables based on the search query parameter
 app.get("/search", (req, res) => {
   const searchQuery = req.query.search;
 
+  // query to search for deals and vouchers whose title or description contains the search query
   const sql = `SELECT * FROM deal 
   WHERE deal.title LIKE ? OR deal.description LIKE ?;
   
@@ -250,6 +265,7 @@ app.get("/search", (req, res) => {
         const dealResults = data[0];
         const voucherResults = data[1];
 
+        // if there are matching deals return them otherwise return the matching vouchers
         if (dealResults.length > 0) {
           res.json({ dataType: "deals", data: dealResults });
         } else {
@@ -260,15 +276,19 @@ app.get("/search", (req, res) => {
   );
 });
 
+// endpoint expects a POST request with a body containing the new user's details
 app.post("/register", (req, res) => {
+  // extract the user's details from the request body
   const { first_name, second_name, username, email, password } = req.body;
 
+  // create a user object with the extracted details and the current date and time
   const user = {
     first_name,
     second_name,
     username,
     email,
     password,
+    // format for sql timestamps
     sign_up_date: new Date().toISOString().slice(0, 19).replace("T", " "),
   };
 
@@ -284,12 +304,16 @@ app.post("/register", (req, res) => {
   });
 });
 
+// endpoint expects a POST request with a body containing the user's username and password
 app.post("/login", (req, res) => {
   const { username, password } = req.body;
 
+  // query to fetch the user with the provided username and password from the database
   let sql = "SELECT * FROM user WHERE username = ? AND password = ?";
   connection.query(sql, [username, password], (err, rows) => {
     if (err) throw err;
+
+    // If a user was found return the user's ID in the response otherwise return null
     let numRows = rows.length;
     if (numRows > 0) {
       res.json({ authen: rows[0].user_id });
@@ -324,7 +348,7 @@ app.post("/saveDeal", (req, res) => {
   connection.query(sql, [userId, dealId], (err, result) => {
     if (err) {
       console.error(err);
-      res.json({ error: "Failed to save the deal" });
+      return res.status(500).json({ error: "Failed to save the deal" });
     } else {
       console.log(`Deal saved successfully for user ID: ${userId}`);
       res.json({ message: "Deal saved successfully" });
@@ -363,7 +387,7 @@ app.post("/likeDeal", (req, res) => {
       console.error(err);
       res.json({ error: "Failed to like the deal" });
     } else {
-      res.json(result);
+      res.json({ message: "deal liked successfully", result });
     }
   });
 });
@@ -379,7 +403,7 @@ app.post("/likeVoucher", (req, res) => {
       console.error(err);
       res.json({ error: "Failed to process voucher like" });
     } else {
-      res.json(result);
+      res.json({ message: "voucher liked succesfully", result });
     }
   });
 });
@@ -418,6 +442,65 @@ app.get("/savedVouchers", (req, res) => {
     } else {
       // Send back the result
       res.json(result);
+    }
+  });
+});
+
+app.post("/deals/add", (req, res) => {
+  // extract the deal details from the request body
+  const {
+    dealTitle,
+    dealDescription,
+    dealLink,
+    dealImageLink,
+    dealOriginalPrice,
+    dealPrice,
+    dealMerchant,
+    // dealCategory,
+    user_id,
+  } = req.body;
+
+  // query the database for the merchant ID that matches the merchant name provided
+  const sqlMerchantId = `SELECT merchant_id FROM merchant WHERE merchant_name = ?`;
+
+  connection.query(sqlMerchantId, [dealMerchant], (err, rows) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: "Database error" });
+    } else {
+      if (rows.length > 0) {
+        // Merchant found, retrieve the ID
+        const dealMerchantId = rows[0].merchant_id;
+
+        // create a deal object with the extracted details
+        const deal = {
+          title: dealTitle,
+          description: dealDescription,
+          deal_uri: dealLink,
+          deal_image_uri: dealImageLink,
+          price: dealPrice,
+          original_price: dealOriginalPrice,
+          user_id: user_id,
+          merchant_id: dealMerchantId,
+        };
+
+        // insert the deal into the database
+        const sqlInsertDeal = "INSERT INTO deal SET ?";
+        connection.query(sqlInsertDeal, deal, (err, result) => {
+          if (err) {
+            console.error(err);
+            return res
+              .status(500)
+              .json({ error: "Failed to insert deal into database" });
+          } else {
+            console.log("Deal added successfully");
+            res.json({ message: "deal added successfully" });
+          }
+        });
+      } else {
+        // if merchant name is not found in the database
+        res.status(400).json({ message: "Merchant not found" });
+      }
     }
   });
 });
