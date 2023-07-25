@@ -7,31 +7,36 @@
                     <div class="row">
                         <div class="col">
                             <h2>About Voucher</h2>
-                            <form id="voucherForm">
+                            <form id="voucherForm" method="POST" action="/vouchers/add">
                                 <div class="mb-3">
                                     <label for="voucherTitle" class="form-label">Title</label>
-                                    <input type="text" class="form-control" id="voucherTitle" required>
+                                    <input type="text" class="form-control" id="voucherTitle" name="voucherTitle"
+                                        required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="voucherCode" class="form-label">Voucher Code</label>
-                                    <input type="text" class="form-control" id="voucherCode" required>
+                                    <input type="text" class="form-control" id="voucherCode" name="voucherCode"
+                                        required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="voucherDescription" class="form-label">Description / Terms &amp;
                                         Conditions</label>
-                                    <textarea class="form-control" id="voucherDescription" rows="4" required></textarea>
+                                    <textarea class="form-control" id="voucherDescription" rows="4"
+                                        name="voucherDescription" required></textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label for="voucherExpiryDate" class="form-label">Expiry Date</label>
-                                    <input type="date" class="form-control" id="voucherExpiryDate" required>
+                                    <input type="date" class="form-control" id="voucherExpiryDate"
+                                        name="voucherExpiryDate" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="voucherShopLink" class="form-label">Shop Link</label>
-                                    <input type="text" class="form-control" id="voucherShopLink" required>
+                                    <input type="text" class="form-control" id="voucherShopLink" name="voucherShopLink"
+                                        required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="merchant" class="form-label">Merchant</label>
-                                    <input type="text" class="form-control" id="merchant" required>
+                                    <input type="text" class="form-control" id="merchant" name="merchant" required>
                                 </div>
 
                                 <div class="mb-3">

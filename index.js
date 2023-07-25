@@ -323,13 +323,17 @@ app.post("/login", (req, res) => {
   });
 });
 
+// get a specific user based on their userId
 app.get("/user/:userId", (req, res) => {
-  const { userId } = req.params;
+  // extract the userId from the route parameters
+  const userId = req.params.userId;
 
   const sql = "SELECT * FROM user WHERE user_id = ?";
+
   connection.query(sql, [userId], (err, rows) => {
     if (err) throw err;
 
+    // if the user is found, return the user's details
     if (rows.length > 0) {
       res.json(rows[0]);
     } else {
@@ -338,8 +342,9 @@ app.get("/user/:userId", (req, res) => {
   });
 });
 
+// route that allows a user to save a deal
 app.post("/saveDeal", (req, res) => {
-  // Retrieve the user ID and deal ID from the query parameters
+  // extract the user ID and deal ID from the query parameters
   const userId = req.query.userId;
   const dealId = req.query.dealId;
 
@@ -356,12 +361,13 @@ app.post("/saveDeal", (req, res) => {
   });
 });
 
+// route that allows a logged in user to save a voucher
 app.post("/saveVoucher", (req, res) => {
-  // Retrieve the user ID and voucher ID from the query parameters
+  // extract the user ID and voucher ID from the query parameters
   const userId = req.query.userId;
   const voucherId = req.query.voucherId;
 
-  // Save the voucher in the user_voucher table
+  // save the voucher in the user_voucher table
   const sql = "INSERT INTO user_voucher (user_id, voucher_id) VALUES (?, ?)";
   connection.query(sql, [userId, voucherId], (err, result) => {
     if (err) {
@@ -408,6 +414,7 @@ app.post("/likeVoucher", (req, res) => {
   });
 });
 
+// returns a users saved deals
 app.get("/savedDeals", (req, res) => {
   const userId = req.query.userId;
 
@@ -426,6 +433,7 @@ app.get("/savedDeals", (req, res) => {
   });
 });
 
+// returns a users saved vouchers
 app.get("/savedVouchers", (req, res) => {
   const userId = req.query.userId;
 
@@ -495,6 +503,62 @@ app.post("/deals/add", (req, res) => {
           } else {
             console.log("Deal added successfully");
             res.json({ message: "deal added successfully" });
+          }
+        });
+      } else {
+        // if merchant name is not found in the database
+        res.status(400).json({ message: "Merchant not found" });
+      }
+    }
+  });
+});
+
+app.post("/vouchers/add", (req, res) => {
+  // extract the voucher details from the request body
+  const {
+    voucherTitle,
+    voucherCode,
+    voucherDescription,
+    voucherExpiryDate,
+    voucherShopLink,
+    merchant,
+    user_id,
+  } = req.body;
+
+  // query the database for the merchant ID that matches the merchant name provided
+  const sqlMerchantId = `SELECT merchant_id FROM merchant WHERE merchant_name = ?`;
+
+  connection.query(sqlMerchantId, [merchant], (err, rows) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: "Database error" });
+    } else {
+      if (rows.length > 0) {
+        // Merchant found, retrieve the ID
+        const merchantId = rows[0].merchant_id;
+
+        // create a voucher object with the extracted details
+        const voucher = {
+          title: voucherTitle,
+          voucher_code: voucherCode,
+          description: voucherDescription,
+          exp_date: voucherExpiryDate,
+          shop_uri: voucherShopLink,
+          user_id: user_id,
+          merchant_id: merchantId,
+        };
+
+        // insert the voucher into the database
+        const sqlInsertVoucher = "INSERT INTO voucher SET ?";
+        connection.query(sqlInsertVoucher, voucher, (err, result) => {
+          if (err) {
+            console.error(err);
+            return res
+              .status(500)
+              .json({ error: "Failed to insert voucher into database" });
+          } else {
+            console.log("Voucher added successfully");
+            res.json({ message: "voucher added successfully" });
           }
         });
       } else {

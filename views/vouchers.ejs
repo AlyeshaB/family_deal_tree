@@ -1,9 +1,13 @@
 <%- include("top") %>
     <%- include("head") %>
+
+        <!-- Main container for vouchers -->
         <div class="container-box">
             <div class="container-lg my-5">
-                <h2>So many vouchers ... redeem them all!</h2>
-                <!-- Dropdown component -->
+                <header>
+                    <h2>So many vouchers ... redeem them all!</h2>
+                </header>
+                <!-- Dropdown component for filters-->
                 <div class="dropdown mb-4">
                     <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
                         data-bs-toggle="dropdown" aria-expanded="false">
@@ -15,14 +19,24 @@
                         <a class="dropdown-item" href="/vouchers/by-exp-date">Expires Soon</a>
                     </ul>
                 </div>
+
+                <!-- Row for the voucher cards -->
                 <div class="row mb-4">
+
+                    <!-- Loop through each voucher and display a card for each -->
                     <% vouchers.forEach((voucher)=> { %>
-                        <div class="col-sm-4 col-lg-4">
+
+                        <!-- Column for each voucher card -->
+                        <div class="col-12 col-sm-6 col-lg-4">
                             <div class="card">
                                 <img class="card-img-top" src="<%= voucher.image_uri %>"
                                     alt="<%= voucher.merchant_name %> logo">
+
+                                <!-- Bookmark icon; functionality depends on whether user is logged in -->
                                 <div class="card-icon">
                                     <% if (loggedIn) { %>
+
+                                        <!-- If user is logged in, form for liking the voucher -->
                                         <form id="likeVoucherForm" action="/saveVoucher" method="post">
                                             <input type="hidden" name="voucherId" value="<%= voucher.voucher_id %>">
                                             <button type="submit" class="btn btn-outline-secondary">
@@ -30,6 +44,8 @@
                                             </button>
                                         </form>
                                         <% } else { %>
+
+                                            <!-- If user is not logged in, bookmark icon links to registration page -->
                                             <a href="/register" class="btn btn-outline-secondary">
                                                 <i class="fa fa-bookmark"></i>
                                             </a>
@@ -49,7 +65,11 @@
                                             </a>
                                         </div>
                                         <div class="col">
+
+                                            <!-- Heart icon; functionality depends on whether user is logged in -->
                                             <% if (loggedIn) { %>
+
+                                                <!-- If user is logged in, form for liking the voucher -->
                                                 <form id="likeVoucherForm" action="/likeVoucher" method="post">
                                                     <input type="hidden" name="voucherId"
                                                         value="<%= voucher.voucher_id %>">
@@ -58,6 +78,8 @@
                                                     </button>
                                                 </form>
                                                 <% } else { %>
+
+                                                    <!-- If user is not logged in, heart icon links to registration page -->
                                                     <a href="/register" class="btn btn-outline-secondary">
                                                         <i class="fas fa-heart"></i>
                                                     </a>
@@ -67,7 +89,7 @@
                                 </div>
                             </div>
                         </div>
-                        <% }); %>
+                        <% }); %> <!-- End of loop through vouchers -->
                 </div>
             </div>
         </div>

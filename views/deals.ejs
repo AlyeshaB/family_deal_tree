@@ -1,10 +1,11 @@
 <%- include("top") %>
     <%- include("head") %>
 
+        <!-- Main container for deals -->
         <div class="container-box">
             <div class="container-lg my-5">
                 <h2>So many deals ... see them all!</h2>
-                <!-- Dropdown component -->
+                <!-- Dropdown component for filter button-->
                 <div class="dropdown mb-4">
                     <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
                         data-bs-toggle="dropdown" aria-expanded="false">
@@ -16,14 +17,25 @@
                         <a class="dropdown-item" href="/deals/recent">Most Recent</a>
                     </ul>
                 </div>
+
+                <!-- Row for the deal cards -->
                 <div class="row mb-4">
+
+                    <!-- Loop through each deal and display a card for each -->
                     <% deals.forEach((deal)=> { %>
-                        <div class="col-sm-4 col-lg-4">
+
+                        <!-- Column for each deal card -->
+                        <div class="col-12 col-sm-6 col-lg-4">
+
+                            <!-- Card for each deal -->
                             <div class="card">
                                 <img class="card-img-top" src="<%= deal.deal_image_uri %>"
                                     alt="<%= deal.title %> Image">
+
+                                <!-- Bookmark icon; functionality depends on whether user is logged in -->
                                 <div class="card-icon">
                                     <% if (loggedIn) { %>
+                                        <!-- If user is logged in, form for saving the deal -->
                                         <form id="saveDealForm" action="/saveDeal" method="post">
                                             <input type="hidden" name="dealId" value="<%= deal.deal_id %>">
                                             <button type="submit" class="btn btn-outline-secondary">
@@ -31,6 +43,7 @@
                                             </button>
                                         </form>
                                         <% } else { %>
+                                            <!-- If user is not logged in, bookmark icon links to registration page -->
                                             <a href="/register" class="btn btn-outline-secondary">
                                                 <i class="fa fa-bookmark" aria-hidden="true"></i> <!-- Save icon -->
                                             </a>
@@ -48,7 +61,11 @@
                                     <div class="button-wrapper">
                                         <a href="/deals/<%= deal.deal_id %>" class="btn btn-primary">View
                                             Deal</a>
+
+                                        <!-- Heart icon; functionality depends on whether user is logged in -->
                                         <% if (loggedIn) { %>
+
+                                            <!-- If user is logged in, form for liking the deal -->
                                             <form id="likeDealForm" action="/likeDeal" method="post">
                                                 <input type="hidden" name="dealId" value="<%= deal.deal_id %>">
                                                 <button type="submit" class="btn btn-outline-secondary">
@@ -56,6 +73,8 @@
                                                 </button>
                                             </form>
                                             <% } else { %>
+
+                                                <!-- If user is not logged in, heart icon links to registration page -->
                                                 <a href="/register" class="btn btn-outline-secondary">
                                                     <i class="fas fa-heart"></i>
                                                 </a>
@@ -64,7 +83,7 @@
                                 </div>
                             </div>
                         </div>
-                        <% }); %>
+                        <% }); %> <!-- End of loop through deals -->
                 </div>
             </div>
         </div>

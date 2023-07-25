@@ -5,7 +5,7 @@
                 <h2>all merchants a-z</h2>
                 <div class="row row-cols-1 row-cols-md-3 g-4">
                     <% merchants.forEach((merchant)=> { %>
-                        <div class="col">
+                        <div class="col-12 col-sm-6 col-lg-4">
                             <a href="/merchants/<%= merchant.merchant_id %>/deals" class="card-link">
                                 <div class="card merchant-card">
                                     <img class="card-img-top merchant-img" src="<%= merchant.image_uri %>"

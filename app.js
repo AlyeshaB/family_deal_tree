@@ -661,10 +661,10 @@ app.post("/deals/add", (req, res) => {
       // dealCategory,
     } = req.body;
 
-    // Endpoint where we'll post our data to the backend
+    // Endpoint where post the data to the backend
     const ep = `http://localhost:4000/deals/add`;
 
-    // Create an object that holds our data
+    // Create an object that holds the data
     const deal = {
       dealTitle: dealTitle,
       dealDescription: dealDescription,
@@ -694,6 +694,47 @@ app.get("/addVoucher", (req, res) => {
   const sessionObj = req.session;
   if (sessionObj.authen) {
     res.render("add_voucher", { tdata: title });
+  }
+});
+
+// route to allow a logged in user to add a deal
+app.post("/vouchers/add", (req, res) => {
+  const sessionObj = req.session;
+  if (sessionObj.authen) {
+    let userId = sessionObj.authen;
+
+    // extract the voucher details from the request body
+    const {
+      voucherTitle,
+      voucherCode,
+      voucherDescription,
+      voucherExpiryDate,
+      voucherShopLink,
+      merchant,
+    } = req.body;
+    // Endpoint where we'll post our data to the backend
+    const ep = `http://localhost:4000/vouchers/add`;
+
+    // create a voucher object with the extracted details
+    const voucher = {
+      voucherTitle: voucherTitle,
+      voucherCode: voucherCode,
+      voucherDescription: voucherDescription,
+      voucherExpiryDate: voucherExpiryDate,
+      voucherShopLink: voucherShopLink,
+      user_id: userId,
+      merchant: merchant,
+    };
+    axios
+      .post(ep, voucher)
+      .then(() => {
+        console.log(`Voucher added successfully for user ID: ${userId}`);
+        res.redirect("/vouchers");
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send("An error occurred. Please try again later.");
+      });
   }
 });
 

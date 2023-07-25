@@ -61,18 +61,40 @@
         </div>
         <!-- End of Carousel container -->
 
+        <!-- Main content container -->
         <div class="container-lg my-5">
+
+            <!-- Heading for the deals section -->
             <h2>popular on family tree deals</h2>
+
+            <!-- Row container for the cards displaying the deals -->
             <div class="row mb-4">
+
+                <!-- Loop through the deals array, generating a card for each deal -->
                 <% for (let i=0; i <21; i++) { %>
-                    <div class="col-sm-4 col-lg-4">
+                    <div class="col-12 col-sm-6 col-lg-4">
                         <div class="card">
                             <img class="card-img-top" src="<%= deals[i].deal_image_uri %>"
                                 alt="<%= deals[i].title %> Image">
+
+                            <!-- Section for saving the deal, only available if the user is registered and logged in -->
                             <div class="card-icon">
-                                <a href="#" class="btn btn-outline-secondary">
-                                    <i class="fa fa-bookmark" aria-hidden="true"></i> <!-- Save icon -->
-                                </a>
+                                <% if (loggedIn) { %>
+
+                                    <!-- Form to save the deal-->
+                                    <form id="saveDealForm" action="/saveDeal" method="post">
+                                        <input type="hidden" name="dealId" value="<%= deal.deal_id %>">
+                                        <button type="submit" class="btn btn-outline-secondary">
+                                            <i class="fa fa-bookmark" aria-hidden="true"></i>
+                                        </button>
+                                    </form>
+
+                                    <!-- If user is not logged in, save icon is a link to the registration page -->
+                                    <% } else { %>
+                                        <a href="/register" class="btn btn-outline-secondary">
+                                            <i class="fa fa-bookmark" aria-hidden="true"></i> <!-- Save icon -->
+                                        </a>
+                                        <% } %>
                             </div>
                             <div class="card-body">
                                 <h3 class="card-title">
@@ -85,17 +107,29 @@
                                 </p>
                                 <div class="button-wrapper">
                                     <a href="/deals/<%= deals[i].deal_id %>" class="btn btn-primary">View Deal</a>
-                                    <a href="#" class="btn btn-outline-secondary">
-                                        <i class="fas fa-heart"></i>
-                                    </a>
+                                    <% if (loggedIn) { %>
+
+                                        <!-- Form to like the deal-->
+                                        <form id="likeDealForm" action="/likeDeal" method="post">
+                                            <input type="hidden" name="dealId" value="<%= deal.deal_id %>">
+                                            <button type="submit" class="btn btn-outline-secondary">
+                                                <i class="fas fa-heart" aria-hidden="true"></i>
+                                            </button>
+                                        </form>
+                                        <% } else { %>
+                                            <a href="/register" class="btn btn-outline-secondary">
+                                                <i class="fas fa-heart"></i>
+                                            </a>
+                                            <% } %>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <% }; %>
+                    <% }; %> <!-- End of the loop -->
             </div>
         </div>
 
+        <!-- Categories section -->
         <section class="categories" id="categories">
 
             <h2 class="heading">browse categories</h2>
@@ -104,6 +138,8 @@
                     <div class="swiper-wrapper">
 
                         <div class="swiper-slide box">
+                            <!-- Each swiper slide contains an image and a category name -->
+                            <!-- image is a clickable link navigating to the specific category page -->
                             <div class="image-section">
                                 <a href="/categories/home-living">
                                     <img class="fit-image"
@@ -185,6 +221,6 @@
                 </div>
             </div>
 
-        </section>
+        </section> <!-- End of categories section -->
 
         <%- include("foot") %>
