@@ -6,9 +6,11 @@ const app = express();
 
 // Define the PORT variable, use the value from the .env file if it's defined, otherwise use 3000
 const PORT = process.env.PORT || 3000;
+
 const path = require("path");
 const axios = require("axios");
-// const connection = require("./config/db.js");
+
+const apiKey = process.env.API_KEY;
 
 const cookieParser = require("cookie-parser");
 
@@ -361,7 +363,7 @@ app.post("/register", (req, res) => {
     password,
   };
 
-  const ep = `http://localhost:4000/register`;
+  const ep = `http://localhost:4000/register?key=${apiKey}`;
 
   // send the user data to the backend server
   axios
@@ -594,55 +596,6 @@ app.get("/addDeal", (req, res) => {
   }
 });
 
-// app.post("/deals/add", (req, res) => {
-//   const sessionObj = req.session;
-//   if (!sessionObj.authen) {
-//     res.redirect("/");
-//   }
-
-//   const {
-//     title,
-//     description,
-//     deal_uri,
-//     deal_image_uri,
-//     original_price,
-//     price,
-//     merchant_id,
-//     post_date,
-//   } = req.body;
-
-//   const insertData = {
-//     title,
-//     description,
-//     deal_uri,
-//     deal_image_uri,
-//     original_price,
-//     price,
-//     user_id: sessionObj.authen,
-//     merchant_id,
-//     post_date,
-//   };
-
-//   const config = {
-//     headers: {
-//       "Content-Type": "application/x-www-form-urlencoded",
-//     },
-//   };
-
-//   const endpoint = "http://localhost:4000/deals/add";
-//   axios
-//     .post(endpoint, insertData, config)
-//     .then((response) => {
-//       const insertedid = response.data.respObj.deal_id;
-//       const resmessage = response.data.respObj.message;
-
-//       res.send(`${resmessage}. INSERTED DB id ${insertedid}`);
-//     })
-//     .catch((err) => {
-//       console.log(err.message);
-//     });
-// });
-
 // route to allow a logged in user to add a deal
 app.post("/deals/add", (req, res) => {
   const sessionObj = req.session;
@@ -658,11 +611,11 @@ app.post("/deals/add", (req, res) => {
       dealOriginalPrice,
       dealPrice,
       dealMerchant,
-      // dealCategory,
+      dealCategory,
     } = req.body;
 
     // Endpoint where post the data to the backend
-    const ep = `http://localhost:4000/deals/add`;
+    const ep = `http://localhost:4000/deals/add?key=${apiKey}`;
 
     // Create an object that holds the data
     const deal = {
@@ -673,7 +626,7 @@ app.post("/deals/add", (req, res) => {
       dealOriginalPrice: dealOriginalPrice,
       dealPrice: dealPrice,
       dealMerchant: dealMerchant,
-      // dealCategory: dealCategory,
+      dealCategory: dealCategory,
       user_id: userId,
     };
     axios
@@ -713,7 +666,7 @@ app.post("/vouchers/add", (req, res) => {
       merchant,
     } = req.body;
     // Endpoint where we'll post our data to the backend
-    const ep = `http://localhost:4000/vouchers/add`;
+    const ep = `http://localhost:4000/vouchers/add?key=${apiKey}`;
 
     // create a voucher object with the extracted details
     const voucher = {

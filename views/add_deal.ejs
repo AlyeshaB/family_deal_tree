@@ -1,67 +1,91 @@
 <%- include("top") %>
     <%- include("head") %>
+
+        <!-- Beginning of main section -->
         <section class="my-4">
             <div class="add-deal">
                 <div class="container">
                     <div class="row">
                         <div class="col">
+
+                            <!-- Deal section -->
                             <div class="voucher">
                                 <h2>About This Deal</h2>
                             </div>
+
+                            <!-- Deal form starts here -->
                             <form id="dealForm" method="POST" action="/deals/add">
+
+                                <!-- Text input for deal title -->
                                 <div class="mb-3">
                                     <label for="dealTitle" class="form-label">Title</label>
                                     <input type="text" class="form-control" id="dealTitle" name="dealTitle" required>
                                 </div>
+
+                                <!-- Text area for deal description -->
                                 <div class="mb-3">
                                     <label for="dealDescription" class="form-label">Description</label>
                                     <textarea class="form-control" id="dealDescription" rows="4" name="dealDescription"
                                         required></textarea>
                                 </div>
+
+                                <!-- Text input for deal link -->
                                 <div class="mb-3">
                                     <label for="dealLink" class="form-label">Link to Deal</label>
                                     <input type="text" class="form-control" id="dealLink" name="dealLink" required>
                                 </div>
+
+                                <!-- Text input for image link -->
                                 <div class="mb-3">
                                     <label for="dealImageLink" class="form-label">Image Link</label>
                                     <input type="text" class="form-control" id="dealImageLink" name="dealImageLink"
                                         required>
                                 </div>
+
+                                <!-- Number input for original price -->
                                 <div class="mb-3">
                                     <label for="dealOriginalPrice" class="form-label">Original Price</label>
                                     <input type="number" class="form-control" id="dealOriginalPrice"
                                         name="dealOriginalPrice" required>
                                 </div>
+
+                                <!-- Number input for deal price -->
                                 <div class="mb-3">
                                     <label for="dealPrice" class="form-label">Price</label>
                                     <input type="number" class="form-control" id="dealPrice" name="dealPrice" required>
                                 </div>
+
+                                <!-- Text input for merchant -->
                                 <div class="mb-3">
                                     <label for="dealMerchant" class="form-label">Merchant</label>
                                     <input type="text" class="form-control" id="dealMerchant" name="dealMerchant"
                                         required>
                                 </div>
-                                <!-- <div class="mb-3">
+
+                                <!-- Dropdown for selecting a deal category -->
+                                <div class="mb-3">
                                     <label for="dealCategory" class="form-label">Category</label>
                                     <select class="form-select" id="dealCategory" name="dealCategory" required>
                                         <option value="" disabled selected>Select a category</option>
-                                        <option value="1">home & living</option>
-                                        <option value="2">culture & leisure</option>
-                                        <option value="3">family & kids</option>
-                                        <option value="2">electronics</option>
-                                        <option value="3">sport & outdoors</option>
-                                        <option value="3">garden & DIY</option>
+                                        <option value="Home & Living">Home & Living</option>
+                                        <option value="Culture & Leisure">Culture & Leisure</option>
+                                        <option value="Family & Kids">Family & Kids</option>
+                                        <option value="Electronics">Electronics</option>
+                                        <option value="Sport & Outdoors">Sport & Outdoors</option>
+                                        <option value="Garden & DIY">Garden & DIY</option>
                                     </select>
-                                </div> -->
+                                </div>
+
+                                <!-- Submit button for the form -->
                                 <div class="mb-3">
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                 </div>
-                            </form>
+                            </form> <!-- end of deal form -->
                         </div>
                     </div>
 
                 </div>
             </div>
-        </section>
+        </section> <!-- end of main section -->
 
         <%- include("foot") %>

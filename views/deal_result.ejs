@@ -1,11 +1,18 @@
 <%- include("top") %>
     <%- include("head") %>
+
+        <!-- Beginning of main content section wrapped in a container box -->
         <div class="container-box">
+
+            <!-- Container for the layout grid with margin top and bottom -->
             <div class="container-lg my-5">
 
+                <!-- Beginning of section containing the deal's details -->
                 <section class="my-4">
                     <div class="card">
                         <div class="row g-0">
+
+                            <!-- Loop over each deal object -->
                             <% deals.forEach((deal)=>{ %>
                                 <div class="col-md-4">
                                     <img src="<%= deal.deal_image_uri %>" class="card-img custom-img"
@@ -28,9 +35,7 @@
                                     </div>
                                 </div>
                         </div>
-
                     </div>
-
                 </section>
 
                 <section class="my-4">
@@ -41,7 +46,10 @@
                                     <div class="row">
                                         <div class="col">
                                             <h2>About This Deal</h2>
+
+                                            <!-- Start of deal details section -->
                                             <div id="dealDetails">
+                                                <!-- The deal.description.split('\n') splits the description string into an array of strings on the basis of newline character '\n'. -->
                                                 <% let lines=deal.description.split('\n'); lines.forEach((line)=> {
                                                     %>
                                                     <p>

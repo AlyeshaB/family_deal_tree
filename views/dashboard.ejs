@@ -1,28 +1,37 @@
 <%- include("top") %>
     <%- include("head") %>
 
+        <!-- Beginning of content section -->
         <div class="content">
+
+            <!-- Container for the create-account-page -->
             <div class="create-account-page container">
+
                 <div class="section-box">
                     <div class="centre">
+
+                        <!-- Row containing a button that takes users to the add deal page-->
                         <div class="row justify-content-center mb-3">
                             <div class="col-md-12">
                                 <a href="/addDeal" class="btn btn-primary">Submit a new deal</a>
                             </div>
                         </div>
 
+                        <!-- Row containing a button that takes users to the add voucher page-->
                         <div class="row justify-content-center mb-3">
                             <div class="col-md-12">
                                 <a href="/addVoucher" class="btn btn-primary">Submit a new voucher</a>
                             </div>
                         </div>
 
+                        <!-- Row containing a button to view saved deals -->
                         <div class="row justify-content-center mb-3">
                             <div class="col-md-12">
                                 <a href="/savedDeals" class="btn btn-primary">View saved deals</a>
                             </div>
                         </div>
 
+                        <!-- Row containing a button to view saved vouchers-->
                         <div class="row justify-content-center">
                             <div class="col-md-12">
                                 <a href="/savedVouchers" class="btn btn-primary">View saved vouchers</a>
@@ -30,7 +39,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </div> <!-- Closing create-account-page container div -->
+        </div> <!-- Closing content div -->
 
         <%- include("foot") %>

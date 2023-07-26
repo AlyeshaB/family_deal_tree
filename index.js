@@ -5,6 +5,11 @@ const connection = require("./config/db.js");
 
 const PORT = process.env.PORT || 4000;
 
+const secureApiKey = process.env.API_KEY;
+
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
+
 // Allows the server to parse JSON data sent in the body of incoming requests
 app.use(express.json());
 
@@ -278,45 +283,65 @@ app.get("/search", (req, res) => {
 
 // endpoint expects a POST request with a body containing the new user's details
 app.post("/register", (req, res) => {
-  // extract the user's details from the request body
-  const { first_name, second_name, username, email, password } = req.body;
+  const apiKey = req.query.key;
 
-  // create a user object with the extracted details and the current date and time
-  const user = {
-    first_name,
-    second_name,
-    username,
-    email,
-    password,
-    // format for sql timestamps
-    sign_up_date: new Date().toISOString().slice(0, 19).replace("T", " "),
-  };
+  if (apiKey === secureApiKey) {
+    // extract the user's details from the request body
+    const { first_name, second_name, username, email, password } = req.body;
 
-  const sql = "INSERT INTO user SET ?";
-  connection.query(sql, user, (err, result) => {
-    if (err) {
-      console.error(err);
-      res.json({ success: false, error: "User registration failed" });
-    } else {
-      console.log("User registered successfully");
-      res.json({ success: true });
-    }
-  });
+    bcrypt.hash(password, saltRounds, (err, hash) => {
+      if (err) {
+        console.error(err);
+        res.json({ success: false, error: "User registration failed" });
+      } else {
+        // create a user object with the extracted details and the current date and time
+        const user = {
+          first_name,
+          second_name,
+          username,
+          email,
+          password: hash, // replace plaintext password with hashed password
+          // format for sql timestamps
+          sign_up_date: new Date().toISOString().slice(0, 19).replace("T", " "),
+        };
+
+        const sql = "INSERT INTO user SET ?";
+        connection.query(sql, user, (err, result) => {
+          if (err) {
+            console.error(err);
+            res
+              .status(500)
+              .json({ error: "User registration failed", details: err });
+          } else {
+            console.log("User registered successfully");
+            res.status(200).json({ success: true });
+          }
+        });
+      }
+    });
+  } else {
+    res.json({ message: "API key not valid" });
+  }
 });
 
 // endpoint expects a POST request with a body containing the user's username and password
 app.post("/login", (req, res) => {
   const { username, password } = req.body;
 
-  // query to fetch the user with the provided username and password from the database
-  let sql = "SELECT * FROM user WHERE username = ? AND password = ?";
-  connection.query(sql, [username, password], (err, rows) => {
+  // query to fetch the user with the provided username from the database
+  let sql = "SELECT * FROM user WHERE username = ?";
+  connection.query(sql, [username], (err, rows) => {
     if (err) throw err;
 
-    // If a user was found return the user's ID in the response otherwise return null
-    let numRows = rows.length;
-    if (numRows > 0) {
-      res.json({ authen: rows[0].user_id });
+    if (rows.length > 0) {
+      // Compare hashed password with the one in database
+      bcrypt.compare(password, rows[0].password, (err, result) => {
+        if (result == true) {
+          res.json({ authen: rows[0].user_id });
+        } else {
+          res.json({ authen: null });
+        }
+      });
     } else {
       res.json({ authen: null });
     }
@@ -455,118 +480,178 @@ app.get("/savedVouchers", (req, res) => {
 });
 
 app.post("/deals/add", (req, res) => {
-  // extract the deal details from the request body
-  const {
-    dealTitle,
-    dealDescription,
-    dealLink,
-    dealImageLink,
-    dealOriginalPrice,
-    dealPrice,
-    dealMerchant,
-    // dealCategory,
-    user_id,
-  } = req.body;
+  const secureKey = req.query.key;
 
-  // query the database for the merchant ID that matches the merchant name provided
-  const sqlMerchantId = `SELECT merchant_id FROM merchant WHERE merchant_name = ?`;
+  if (secureKey === secureApiKey) {
+    // extract the deal details from the request body
+    const {
+      dealTitle,
+      dealDescription,
+      dealLink,
+      dealImageLink,
+      dealOriginalPrice,
+      dealPrice,
+      dealMerchant,
+      dealCategory,
+      user_id,
+    } = req.body;
+    console.log(`Deal Category: ${dealCategory}`); // Log the dealCategory value
+    // query the database for the merchant ID that matches the merchant name provided
+    const sqlMerchantId = `SELECT merchant_id FROM merchant WHERE merchant_name = ?`;
 
-  connection.query(sqlMerchantId, [dealMerchant], (err, rows) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ error: "Database error" });
-    } else {
-      if (rows.length > 0) {
-        // Merchant found, retrieve the ID
-        const dealMerchantId = rows[0].merchant_id;
-
-        // create a deal object with the extracted details
-        const deal = {
-          title: dealTitle,
-          description: dealDescription,
-          deal_uri: dealLink,
-          deal_image_uri: dealImageLink,
-          price: dealPrice,
-          original_price: dealOriginalPrice,
-          user_id: user_id,
-          merchant_id: dealMerchantId,
-        };
-
-        // insert the deal into the database
-        const sqlInsertDeal = "INSERT INTO deal SET ?";
-        connection.query(sqlInsertDeal, deal, (err, result) => {
-          if (err) {
-            console.error(err);
-            return res
-              .status(500)
-              .json({ error: "Failed to insert deal into database" });
-          } else {
-            console.log("Deal added successfully");
-            res.json({ message: "deal added successfully" });
-          }
-        });
+    connection.query(sqlMerchantId, [dealMerchant], (err, rows) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ error: "Database error" });
       } else {
-        // if merchant name is not found in the database
-        res.status(400).json({ message: "Merchant not found" });
+        if (rows.length > 0) {
+          // Merchant found, retrieve the ID
+          const dealMerchantId = rows[0].merchant_id;
+
+          // create a deal object with the extracted details
+          const deal = {
+            title: dealTitle,
+            description: dealDescription,
+            deal_uri: dealLink,
+            deal_image_uri: dealImageLink,
+            price: dealPrice,
+            original_price: dealOriginalPrice,
+            user_id: user_id,
+            merchant_id: dealMerchantId,
+          };
+
+          // insert the deal into the database
+          const sqlInsertDeal = "INSERT INTO deal SET ?";
+          connection.query(sqlInsertDeal, deal, (err, result) => {
+            if (err) {
+              console.error(err);
+              return res
+                .status(500)
+                .json({ error: "Failed to insert deal into database" });
+            } else {
+              console.log("Deal added successfully");
+
+              // deal_id of the deal that's just been inserted
+              const deal_id = result.insertId;
+
+              // query the database for the category_id that matches the category name provided
+              const categoryId = `SELECT category_id FROM category WHERE category_name = ?`;
+
+              connection.query(categoryId, [dealCategory], (err, rows) => {
+                if (err) {
+                  console.error(err);
+                  return res
+                    .status(500)
+                    .json({ error: "Failed to find category in database" });
+                } else {
+                  if (rows.length > 0) {
+                    // Category found, retrieve the ID
+                    const categoryId = rows[0].category_id;
+
+                    // insert the deal_id and category_id into the deal_category table
+                    const sqlInsertDealCategory =
+                      "INSERT INTO deal_category (deal_id, category_id) VALUES ?";
+                    const dealCategoryValues = [[deal_id, categoryId]];
+                    connection.query(
+                      sqlInsertDealCategory,
+                      [dealCategoryValues],
+                      (err, result) => {
+                        if (err) {
+                          console.error(err);
+                          return res.status(500).json({
+                            error: "Failed to insert into deal_category table",
+                          });
+                        } else {
+                          console.log("Deal_category added successfully");
+                          res.json({
+                            message:
+                              "deal and deal_category added successfully",
+                          });
+                        }
+                      }
+                    );
+                  } else {
+                    // If category name is not found in the database
+                    res.status(400).json({ message: "Category not found" });
+                  }
+                }
+              });
+            }
+          });
+        } else {
+          // if merchant name is not found in the database
+          res.status(400).json({ message: "Merchant not found" });
+        }
       }
-    }
-  });
+    });
+  } else {
+    res.json({ message: "API key not valid" });
+  }
 });
 
 app.post("/vouchers/add", (req, res) => {
-  // extract the voucher details from the request body
-  const {
-    voucherTitle,
-    voucherCode,
-    voucherDescription,
-    voucherExpiryDate,
-    voucherShopLink,
-    merchant,
-    user_id,
-  } = req.body;
+  const secureKey = req.query.key;
 
-  // query the database for the merchant ID that matches the merchant name provided
-  const sqlMerchantId = `SELECT merchant_id FROM merchant WHERE merchant_name = ?`;
+  if (secureKey === secureApiKey) {
+    // extract the voucher details from the request body
+    const {
+      voucherTitle,
+      voucherCode,
+      voucherDescription,
+      voucherExpiryDate,
+      voucherShopLink,
+      merchant,
+      user_id,
+    } = req.body;
 
-  connection.query(sqlMerchantId, [merchant], (err, rows) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ error: "Database error" });
-    } else {
-      if (rows.length > 0) {
-        // Merchant found, retrieve the ID
-        const merchantId = rows[0].merchant_id;
+    // query the database for the merchant ID that matches the merchant name provided
+    const sqlMerchantId = `SELECT merchant_id FROM merchant WHERE merchant_name = ?`;
 
-        // create a voucher object with the extracted details
-        const voucher = {
-          title: voucherTitle,
-          voucher_code: voucherCode,
-          description: voucherDescription,
-          exp_date: voucherExpiryDate,
-          shop_uri: voucherShopLink,
-          user_id: user_id,
-          merchant_id: merchantId,
-        };
-
-        // insert the voucher into the database
-        const sqlInsertVoucher = "INSERT INTO voucher SET ?";
-        connection.query(sqlInsertVoucher, voucher, (err, result) => {
-          if (err) {
-            console.error(err);
-            return res
-              .status(500)
-              .json({ error: "Failed to insert voucher into database" });
-          } else {
-            console.log("Voucher added successfully");
-            res.json({ message: "voucher added successfully" });
-          }
-        });
+    connection.query(sqlMerchantId, [merchant], (err, rows) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ error: "Database error" });
       } else {
-        // if merchant name is not found in the database
-        res.status(400).json({ message: "Merchant not found" });
+        if (rows.length > 0) {
+          // Merchant found, retrieve the ID
+          const merchantId = rows[0].merchant_id;
+
+          // create a voucher object with the extracted details
+          const voucher = {
+            title: voucherTitle,
+            voucher_code: voucherCode,
+            description: voucherDescription,
+            exp_date: voucherExpiryDate,
+            shop_uri: voucherShopLink,
+            user_id: user_id,
+            merchant_id: merchantId,
+          };
+
+          // insert the voucher into the database
+          const sqlInsertVoucher = "INSERT INTO voucher SET ?";
+          connection.query(sqlInsertVoucher, voucher, (err, result) => {
+            if (err) {
+              console.error(err);
+              return res
+                .status(500)
+                .json({ error: "Failed to insert voucher into database" });
+            } else {
+              console.log("Voucher added successfully");
+              res.json({
+                message: "voucher added successfully",
+                key: secureApiKey,
+              });
+            }
+          });
+        } else {
+          // if merchant name is not found in the database
+          res.status(400).json({ message: "Merchant not found" });
+        }
       }
-    }
-  });
+    });
+  } else {
+    res.json({ message: "API key not valid" });
+  }
 });
 
 const server = app.listen(PORT, () => {

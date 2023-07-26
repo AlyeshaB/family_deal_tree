@@ -1,9 +1,9 @@
-// Use dotenv to load environment variables from .env file into process.env for secure, flexible configuration
+// load environment variables from .env file into process.env for secure flexible configuration
 require("dotenv").config();
 
 const mysql = require("mysql");
 
-// a connection pool is a place where connections are stored.
+// a connection pool is a place where connections are stored
 const db = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,

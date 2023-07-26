@@ -1,39 +1,54 @@
 <%- include("top") %>
     <%- include("head") %>
 
+        <!-- Beginning of main section -->
         <section class="my-4">
             <div class="add-voucher">
                 <div class="container">
                     <div class="row">
                         <div class="col">
                             <h2>About Voucher</h2>
+
+                            <!-- Voucher form starts here -->
                             <form id="voucherForm" method="POST" action="/vouchers/add">
+
+                                <!-- Text input for voucher title -->
                                 <div class="mb-3">
                                     <label for="voucherTitle" class="form-label">Title</label>
                                     <input type="text" class="form-control" id="voucherTitle" name="voucherTitle"
                                         required>
                                 </div>
+
+                                <!-- Text input for voucher code -->
                                 <div class="mb-3">
                                     <label for="voucherCode" class="form-label">Voucher Code</label>
                                     <input type="text" class="form-control" id="voucherCode" name="voucherCode"
                                         required>
                                 </div>
+
+                                <!-- Text area for voucher description, terms and conditions -->
                                 <div class="mb-3">
                                     <label for="voucherDescription" class="form-label">Description / Terms &amp;
                                         Conditions</label>
                                     <textarea class="form-control" id="voucherDescription" rows="4"
                                         name="voucherDescription" required></textarea>
                                 </div>
+
+                                <!-- Date input for voucher expiry date -->
                                 <div class="mb-3">
                                     <label for="voucherExpiryDate" class="form-label">Expiry Date</label>
                                     <input type="date" class="form-control" id="voucherExpiryDate"
                                         name="voucherExpiryDate" required>
                                 </div>
+
+                                <!-- Text input for shop link where voucher can be applied -->
                                 <div class="mb-3">
                                     <label for="voucherShopLink" class="form-label">Shop Link</label>
                                     <input type="text" class="form-control" id="voucherShopLink" name="voucherShopLink"
                                         required>
                                 </div>
+
+                                <!-- Text input for voucher merchant -->
                                 <div class="mb-3">
                                     <label for="merchant" class="form-label">Merchant</label>
                                     <input type="text" class="form-control" id="merchant" name="merchant" required>
@@ -42,12 +57,12 @@
                                 <div class="mb-3">
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                 </div>
-                            </form>
+                            </form> <!-- end of voucher form -->
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </section> <!-- end of main section -->
 
 
         <%- include("foot") %>
