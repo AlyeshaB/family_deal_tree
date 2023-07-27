@@ -33,7 +33,7 @@
         <div class="fas fa-bars" id="menu-btn"></div>
         <div class="fas fa-search" id="search-btn"></div>
         <% if (loggedIn) { %>
-            <a href="/dashboard">
+            <a href="/user/dashboard">
                 <div class="fas fa-user"></div>
             </a>
             <% } else { %>
@@ -50,7 +50,7 @@
 
     <% if (loggedIn) { %>
         <!-- Show logout button -->
-        <form action="/logout" method="POST" class="logout-form">
+        <form action="/user/logout" method="POST" class="logout-form">
             <button type="submit" id="logout-button">
                 <div class="fas fa-sign-out" id="signout-btn"></div>
             </button>
@@ -62,7 +62,7 @@
                 <input type="text" name="username" placeholder="username" class="box" />
                 <input type="password" name="password" placeholder="password" class="box" />
                 <input type="submit" value="login" class="button" />
-                <p>no account? <a href="/register">sign up</a></p>
+                <p>no account? <a href="/user/register">sign up</a></p>
             </form>
             <% } %>
 </header>

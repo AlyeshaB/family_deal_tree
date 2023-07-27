@@ -82,8 +82,8 @@
                                 <% if (loggedIn) { %>
 
                                     <!-- Form to save the deal-->
-                                    <form id="saveDealForm" action="/saveDeal" method="post">
-                                        <input type="hidden" name="dealId" value="<%= deal.deal_id %>">
+                                    <form id="saveDealForm" action="/deals/save" method="post">
+                                        <input type="hidden" name="dealId" value="<%= deals.deal_id %>">
                                         <button type="submit" class="btn btn-outline-secondary">
                                             <i class="fa fa-bookmark" aria-hidden="true"></i>
                                         </button>
@@ -91,7 +91,7 @@
 
                                     <!-- If user is not logged in, save icon is a link to the registration page -->
                                     <% } else { %>
-                                        <a href="/register" class="btn btn-outline-secondary">
+                                        <a href="/user/register" class="btn btn-outline-secondary">
                                             <i class="fa fa-bookmark" aria-hidden="true"></i> <!-- Save icon -->
                                         </a>
                                         <% } %>
@@ -110,14 +110,14 @@
                                     <% if (loggedIn) { %>
 
                                         <!-- Form to like the deal-->
-                                        <form id="likeDealForm" action="/likeDeal" method="post">
+                                        <form id="likeDealForm" action="/deals/like" method="post">
                                             <input type="hidden" name="dealId" value="<%= deal.deal_id %>">
                                             <button type="submit" class="btn btn-outline-secondary">
                                                 <i class="fas fa-heart" aria-hidden="true"></i>
                                             </button>
                                         </form>
                                         <% } else { %>
-                                            <a href="/register" class="btn btn-outline-secondary">
+                                            <a href="/user/register" class="btn btn-outline-secondary">
                                                 <i class="fas fa-heart"></i>
                                             </a>
                                             <% } %>

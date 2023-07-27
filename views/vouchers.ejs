@@ -37,7 +37,7 @@
                                     <% if (loggedIn) { %>
 
                                         <!-- If user is logged in, form for liking the voucher -->
-                                        <form id="likeVoucherForm" action="/saveVoucher" method="post">
+                                        <form id="likeVoucherForm" action="/vouchers/save" method="post">
                                             <input type="hidden" name="voucherId" value="<%= voucher.voucher_id %>">
                                             <button type="submit" class="btn btn-outline-secondary">
                                                 <i class="fa fa-bookmark" aria-hidden="true"></i>
@@ -46,7 +46,7 @@
                                         <% } else { %>
 
                                             <!-- If user is not logged in, bookmark icon links to registration page -->
-                                            <a href="/register" class="btn btn-outline-secondary">
+                                            <a href="/user/register" class="btn btn-outline-secondary">
                                                 <i class="fa fa-bookmark"></i>
                                             </a>
                                             <% } %>
@@ -70,7 +70,7 @@
                                             <% if (loggedIn) { %>
 
                                                 <!-- If user is logged in, form for liking the voucher -->
-                                                <form id="likeVoucherForm" action="/likeVoucher" method="post">
+                                                <form id="likeVoucherForm" action="/vouchers/like" method="post">
                                                     <input type="hidden" name="voucherId"
                                                         value="<%= voucher.voucher_id %>">
                                                     <button type="submit" class="btn btn-outline-secondary">
@@ -80,7 +80,7 @@
                                                 <% } else { %>
 
                                                     <!-- If user is not logged in, heart icon links to registration page -->
-                                                    <a href="/register" class="btn btn-outline-secondary">
+                                                    <a href="/user/register" class="btn btn-outline-secondary">
                                                         <i class="fas fa-heart"></i>
                                                     </a>
                                                     <% } %>

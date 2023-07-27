@@ -36,7 +36,7 @@
                                 <div class="card-icon">
                                     <% if (loggedIn) { %>
                                         <!-- If user is logged in, form for saving the deal -->
-                                        <form id="saveDealForm" action="/saveDeal" method="post">
+                                        <form id="saveDealForm" action="/deals/save" method="post">
                                             <input type="hidden" name="dealId" value="<%= deal.deal_id %>">
                                             <button type="submit" class="btn btn-outline-secondary">
                                                 <i class="fa fa-bookmark" aria-hidden="true"></i>
@@ -44,7 +44,7 @@
                                         </form>
                                         <% } else { %>
                                             <!-- If user is not logged in, bookmark icon links to registration page -->
-                                            <a href="/register" class="btn btn-outline-secondary">
+                                            <a href="/user/register" class="btn btn-outline-secondary">
                                                 <i class="fa fa-bookmark" aria-hidden="true"></i> <!-- Save icon -->
                                             </a>
                                             <% } %>
@@ -66,7 +66,7 @@
                                         <% if (loggedIn) { %>
 
                                             <!-- If user is logged in, form for liking the deal -->
-                                            <form id="likeDealForm" action="/likeDeal" method="post">
+                                            <form id="likeDealForm" action="/deals/like" method="post">
                                                 <input type="hidden" name="dealId" value="<%= deal.deal_id %>">
                                                 <button type="submit" class="btn btn-outline-secondary">
                                                     <i class="fas fa-heart" aria-hidden="true"></i>
@@ -75,7 +75,7 @@
                                             <% } else { %>
 
                                                 <!-- If user is not logged in, heart icon links to registration page -->
-                                                <a href="/register" class="btn btn-outline-secondary">
+                                                <a href="/user/register" class="btn btn-outline-secondary">
                                                     <i class="fas fa-heart"></i>
                                                 </a>
                                                 <% } %>
