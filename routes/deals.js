@@ -152,6 +152,7 @@ router.get("/add", (req, res) => {
 
 // route to allow a logged in user to add a deal
 router.post("/add", (req, res) => {
+  const title = "posted deals";
   const sessionObj = req.session;
   if (sessionObj.authen) {
     let userId = sessionObj.authen;
@@ -185,9 +186,35 @@ router.post("/add", (req, res) => {
     };
     axios
       .post(ep, deal)
-      .then(() => {
+      .then((response) => {
+        const data = response.data;
         console.log(`Deal added successfully for user ID: ${userId}`);
-        res.redirect("/deals");
+        res.render("deals", { tdata: title, deals: data });
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send("An error occurred. Please try again later.");
+      });
+  }
+});
+
+router.get("/posted", (req, res) => {
+  const title = "posted deals";
+  const sessionObj = req.session;
+  if (sessionObj.authen) {
+    let userId = sessionObj.authen;
+
+    // Endpoint where post the data to the backend
+    const ep = `http://localhost:4000/deals/posted/${userId}`;
+
+    axios
+      .get(ep)
+      .then((response) => {
+        const data = response.data;
+        console.log(
+          `Posted Deals retrieved succesfully for user ID: ${userId}`
+        );
+        res.render("deals", { tdata: title, deals: data });
       })
       .catch((err) => {
         console.error(err);

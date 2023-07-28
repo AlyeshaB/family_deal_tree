@@ -194,6 +194,31 @@ router.post("/add", (req, res) => {
   }
 });
 
+router.get("/posted", (req, res) => {
+  const title = "posted vouchers";
+  const sessionObj = req.session;
+  if (sessionObj.authen) {
+    let userId = sessionObj.authen;
+
+    // Endpoint where post the data to the backend
+    const ep = `http://localhost:4000/vouchers/posted/${userId}`;
+
+    axios
+      .get(ep)
+      .then((response) => {
+        const data = response.data;
+        console.log(
+          `Posted Vouchers retrieved succesfully for user ID: ${userId}`
+        );
+        res.render("vouchers", { tdata: title, vouchers: data });
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send("An error occurred. Please try again later.");
+      });
+  }
+});
+
 // route to get a specific voucher
 router.get("/:voucher_id", (req, res) => {
   const voucherId = req.params.voucher_id;

@@ -99,6 +99,8 @@ router.post("/logout", (req, res) => {
         .status(500)
         .json({ error: "An error occurred while trying to logout." });
     }
+    // Clear cookies
+    res.clearCookie("connect.sid");
     setTimeout(() => {
       res.redirect("/");
     }, 2000);

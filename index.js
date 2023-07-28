@@ -563,9 +563,20 @@ app.post("/deals/add", (req, res) => {
                           });
                         } else {
                           console.log("Deal_category added successfully");
-                          res.json({
-                            message:
-                              "deal and deal_category added successfully",
+
+                          // Query all deals from this user
+                          const userDeals =
+                            "SELECT * FROM deal WHERE user_id = ?";
+                          connection.query(userDeals, user_id, (err, deals) => {
+                            if (err) {
+                              console.error(err);
+                              return res
+                                .status(500)
+                                .json({ error: "Failed to fetch user deals" });
+                            } else {
+                              // Render the deals view with the user's deals
+                              res.json(deals);
+                            }
                           });
                         }
                       }
@@ -587,6 +598,21 @@ app.post("/deals/add", (req, res) => {
   } else {
     res.json({ message: "API key not valid" });
   }
+});
+
+app.get("/deals/posted/:userId", (req, res) => {
+  const userId = req.params.userId;
+
+  const sql = `SELECT * FROM deal WHERE user_id = ?`;
+
+  connection.query(sql, [userId], (err, deals) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: "Database error" });
+    } else {
+      res.json(deals);
+    }
+  });
 });
 
 app.post("/vouchers/add", (req, res) => {
@@ -652,6 +678,24 @@ app.post("/vouchers/add", (req, res) => {
   } else {
     res.json({ message: "API key not valid" });
   }
+});
+
+app.get("/vouchers/posted/:userId", (req, res) => {
+  const userId = req.params.userId;
+
+  const sql = `SELECT *, merchant.image_uri 
+  FROM voucher 
+  JOIN merchant ON voucher.merchant_id = merchant.merchant_id
+  WHERE voucher.user_id = ?`;
+
+  connection.query(sql, [userId], (err, vouchers) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: "Database error" });
+    } else {
+      res.json(vouchers);
+    }
+  });
 });
 
 const server = app.listen(PORT, () => {
