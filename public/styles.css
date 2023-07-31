@@ -12,8 +12,6 @@
   text-decoration: none;
   /* transform the first character of each word to uppercase*/
   text-transform: capitalize;
-  /* provides a fluid visual effect*/
-  transition: all 0.2s linear;
 }
 
 html {
@@ -221,9 +219,10 @@ ul:hover,
   /* add a box shadow to create a lifted effect */
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
 }
+/* search bar transition*/
 .header .search-form.show {
   right: 2rem;
-  transition: 0.3s linear;
+  transition: 0.3 linear;
 }
 
 .header .search-form input {
@@ -304,7 +303,7 @@ ul:hover,
 .c-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center; /* Adjust as needed */
 }
 

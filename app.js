@@ -9,10 +9,6 @@ const PORT = process.env.PORT || 3000;
 
 const path = require("path");
 
-const axios = require("axios");
-
-const apiKey = process.env.API_KEY;
-
 const cookieParser = require("cookie-parser");
 
 // enables the server to store session information for each client and associate it with a unique session ID
